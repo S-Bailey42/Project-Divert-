@@ -9,6 +9,10 @@
 # testing
 /coverage
 
+# images
+.jpg
+.png
+
 # next.js
 /.next/
 /out/
