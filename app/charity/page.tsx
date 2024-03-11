@@ -1,3 +1,4 @@
+"use client"
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -7,8 +8,9 @@ import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 import Icon from "@mdi/react";
 import { mdiAccount, mdiEmail, mdiMenu, mdiPhone } from '@mdi/js';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { AppBar, Box, IconButton, Pagination, Toolbar } from '@mui/material';
+import { SideDrawer } from '@/components/components';
 
 export default function Home() {
 
@@ -19,15 +21,7 @@ export default function Home() {
         <div className='w-full'>
             <AppBar position="sticky">
                 <Toolbar sx={{ width: "100%", maxWidth: 600, mx: "auto" }}>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{ mr: 2 }}
-                    >
-                        <Icon size={1.0} path={mdiMenu} />
-                    </IconButton>
+                    <SideDrawer/>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Title
                     </Typography>
@@ -45,17 +39,7 @@ export default function Home() {
     )
 }
 
-function Drawer() {
-    const [open,setOpen] = useState(false)
-    const toggleDrawer = (newOpen:boolean) => () => {
-        setOpen(newOpen)
-    };
-    const DrawerList = (
-        <Box sx={{width:250}} role="presentation" onClick={toggleDrawer(false)}>
-            
-        </Box>
-    )
-}
+
 
 function Item({ index }: { index: number }) {
 
