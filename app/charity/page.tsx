@@ -1,3 +1,4 @@
+"use client"
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -6,53 +7,39 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 import Icon from "@mdi/react";
-import { mdiAccount, mdiEmail, mdiPhone } from '@mdi/js';
-import { useEffect, useState } from 'react';
-import { Pagination } from '@mui/material';
-
+import { mdiAccount, mdiEmail, mdiMenu, mdiPhone } from '@mdi/js';
+import { useEffect } from 'react';
+import { AppBar, Box, IconButton, Pagination, Toolbar } from '@mui/material';
+import { SideDrawer } from '@/components/components';
 
 export default function Home() {
 
-    const list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    const list = [0, 0, 0, 0]//, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     return (
-        <>
-            <div className='h-[200px] w-full bg-slate-300 sticky top-0 z-10 flex flex-row'>
-                <Typography variant="h1" className="pl-8 w-fit h-fit my-auto">
-                    SkipHub
-                </Typography>
-                <div className='mr-0 ml-auto flex flex-row gap-4'>
-                    <Button size="large">
-                        abc
-                    </Button>
-                    <Button size="large">
-                        abc
-                    </Button>
-                    <a href="/login">Login</a>
-                    <Button size="large">
-                        abc
-                    </Button>
-                    <Button size="large">
-                        abc
-                    </Button>
-                </div>
 
-            </div>
-            <div className='grid lg:grid-cols-3 gap-4 w-fit mx-auto sm:grid-cols-2  p-5'>
+        <div className='w-full'>
+            <AppBar position="sticky">
+                <Toolbar sx={{ width: "100%", maxWidth: 600, mx: "auto" }}>
+                    <SideDrawer/>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                        Title
+                    </Typography>
+
+                </Toolbar>
+            </AppBar>
+            <div className='flex flex-col gap-4 m-4'>
                 {list.map((value, index) => (
                     <Item key={index} index={index} />
                 ))}
             </div>
-            <Pagination count={10} className='mx-auto w-fit mb-4'></Pagination>
-        </>
+            <Pagination count={11} defaultPage={1} className="my-4 w-fit mx-auto" />
+        </div>
+
     )
 }
 
-function Toolbar() {
-    return (
-        <></>
-    )
-}
+
 
 function Item({ index }: { index: number }) {
 
@@ -61,10 +48,10 @@ function Item({ index }: { index: number }) {
     return (
         <>
 
-            <Card sx={{ maxWidth: 500, minWidth: 400 }}>
+            <Card >
                 <CardMedia
                     image={`/${index % 6 + 1}.jpg`}
-                    sx={{ height: 150 }}
+                    sx={{ height: 200 }}
                     title="skip"
                 ></CardMedia>
 
