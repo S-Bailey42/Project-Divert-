@@ -28,7 +28,7 @@ export default function Home() {
 
                 </Toolbar>
             </AppBar>
-            <div className='flex flex-col gap-4 mt-4'>
+            <div className='flex flex-col gap-4 m-4'>
                 {list.map((value, index) => (
                     <Item key={index} index={index} />
                 ))}
