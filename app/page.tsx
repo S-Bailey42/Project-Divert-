@@ -10,6 +10,7 @@ import { mdiAccount, mdiEmail, mdiPhone } from '@mdi/js';
 import { useEffect, useState } from 'react';
 import { Pagination } from '@mui/material';
 
+
 export default function Home() {
 
     const list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -27,6 +28,7 @@ export default function Home() {
                     <Button size="large">
                         abc
                     </Button>
+                    <a href="/login">Login</a>
                     <Button size="large">
                         abc
                     </Button>
