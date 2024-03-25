@@ -33,7 +33,7 @@ export default function HomePage() {
             items-center font-bold text-white text-5xl">Choose which option best suits you</p>
 
             <button className=" rounded-lg bg-[#0473ba] p-2 text-white font-bold
-             hover:bg-[#ae1182] transition ease-in duration-400 absolute top-96 left-96 md:left-64
+             hover:bg-[#ae1182] transition ease-in duration-400 absolute top-96 left-96 
                w-40 h-20 text-4xl opacity-70 hover:opacity-100"
 
                 onMouseEnter={() => setBackgroundImage(CharityImage)}
@@ -42,16 +42,11 @@ export default function HomePage() {
             </button>
 
             <button className=" rounded-lg bg-[#0473ba] p-2 text-white font-bold
-             hover:bg-[#ae1182] transition ease-in duration-400 absolute top-96 right-96 md:right-64
+             hover:bg-[#ae1182] transition ease-in duration-400 absolute top-96 right-96
              w-50 h-20 text-4xl opacity-70 hover:opacity-100"
 
-                onMouseEnter={() => {
-                    setBackgroundImage(ConstructionImage);
-                    
-                }
-            }
+                onMouseEnter={() => setBackgroundImage(ConstructionImage)}
             
-
             >Construction Site
 
 
