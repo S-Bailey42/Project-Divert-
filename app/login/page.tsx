@@ -16,7 +16,7 @@ import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 import Image from 'next/image'
-import companyImage from '/app/public/project divert logo.png'
+import companyImage from 'd:/Sam/Documents/Work/Encore/PD Project/project divert logo.png'
 
 function Copyright(props: any) {
     return (
@@ -27,7 +27,7 @@ function Copyright(props: any) {
             {...props}
         >
             {'Copyright © '}
-            <Link color="inherit" href="/">
+            <Link color="inherit" href="/charity">
                 Project Divert
             </Link>{' '}
             {new Date().getFullYear()}
