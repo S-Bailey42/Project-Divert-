@@ -2,15 +2,18 @@
 
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import Alert from "@mui/material/Alert";
 // import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
@@ -18,7 +21,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import Image from "next/image";
 import companyImage from "/app/public/project divert logo.png";
-import { stringify } from "querystring";
 
 function Copyright(props: any) {
   return (
@@ -38,25 +40,25 @@ function Copyright(props: any) {
   );
 }
 
-function validatePassword(newPassword: string) {
-  const passwordRegex = new RegExp(
-    /^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$/
+function isEmail(email: string) {
+  const emailRegex = new RegExp(
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   );
+  return emailRegex.test(email);
 }
 
 export default function SignUp() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const newPassword = data.get("new-password") as string;
-
-    if (!validatePassword(newPassword)) {
-      console.log("Not a valid password, please match password criteria");
+    const email = data.get("email") as string;
+    if (!isEmail(email)) {
+      console.log("this is not an email");
     } else {
       console.log({
-        currentPassowrd: data.get("current-password"),
-        newPassword: newPassword,
-        confirmNewPassword: data.get("confirm-new-password"),
+        email: email,
+        companyName: data.get("companyName"),
+        userType: data.get("radio-buttons-group"),
       });
     }
   };
@@ -76,8 +78,8 @@ export default function SignUp() {
           <Image alt="pd" src={companyImage} />
         </div>
 
-        <Typography component="h1" variant="h6" className=" pt-5">
-          For security reasons please reset your password
+        <Typography component="h1" variant="h5" className=" pt-5">
+          Request Your Account
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
@@ -85,44 +87,57 @@ export default function SignUp() {
               <TextField
                 required
                 fullWidth
-                id="currentPassword"
-                label="Current Password"
-                type="password"
-                name="currentPassword"
+                id="companyName"
+                label="Company Name"
+                name="companyName"
+                autoComplete="companyName"
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 required
                 fullWidth
-                name="newPassword"
-                label="New Password"
-                type="password"
-                id="newPassword"
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name="confirmNewPassword"
-                label="Confirm New Password"
-                type="password"
-                id="confirmNewPassword"
-              />
+              <FormControl>
+                <FormLabel id="demo-radio-buttons-group-label">
+                  Account Type
+                </FormLabel>
+                <RadioGroup
+                  id="accType"
+                  aria-labelledby="demo-radio-buttons-group-label"
+                  defaultValue="female"
+                  name="radio-buttons-group"
+                >
+                  <FormControlLabel
+                    value="1"
+                    control={<Radio />}
+                    label="Beneficiary"
+                  />
+                  <FormControlLabel
+                    value="2"
+                    control={<Radio />}
+                    label="Work Site"
+                  />
+                </RadioGroup>
+              </FormControl>
             </Grid>
           </Grid>
+
           <Button
             className="bg-[#0473ba] font-bold hover:bg-[#ae1182] "
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            onClick={() => alert("hello world")}
           >
-            Reset
+            Request Access
           </Button>
-
           <Grid container justifyContent="flex-end"></Grid>
         </Box>
       </Box>
