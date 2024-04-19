@@ -102,7 +102,7 @@ export default function SignUp() {
             </Grid>
           </Grid>
           <Button
-            className="bg-[#0473ba] font-bold hover:bg-[#ae1182] "
+            className="bg-[#0473ba] font-bold hover:bg-[#ae1182] "//hover doesn't work and I don't know why
             type="submit"
             fullWidth
             variant="contained"

@@ -38,27 +38,37 @@ function Copyright(props: any) {
   );
 }
 
-function validatePassword(newPassword: string) {
+
   const passwordRegex = new RegExp(
-    /^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$/
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
   );
-}
 
 export default function SignUp() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const newPassword = data.get("new-password") as string;
+    const newPassword = data.get("newPassword") as string;
+    const confirmNewPassword = data.get("confirmNewPassword") as string;
+    const currentPassword = data.get("currentPassword") as string;
+    
+    function validatePassword(password : string) {
+      return passwordRegex.test(password);
+    }
 
     if (!validatePassword(newPassword)) {
       console.log("Not a valid password, please match password criteria");
-    } else {
+    } 
+    else if (newPassword != confirmNewPassword) {
+      console.log("Passwords do not match");
+    }
+    else {
       console.log({
-        currentPassowrd: data.get("current-password"),
-        newPassword: newPassword,
-        confirmNewPassword: data.get("confirm-new-password"),
+        currentPassword:currentPassword,
+        newPassword:newPassword,
+        confirmNewPassword:confirmNewPassword
       });
     }
+    
   };
 
   return (
@@ -118,7 +128,7 @@ export default function SignUp() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            onClick={() => alert("hello world")}
+            onClick={() => alert("Password successfully reset")}
           >
             Reset
           </Button>
