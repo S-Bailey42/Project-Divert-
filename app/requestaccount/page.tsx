@@ -46,18 +46,29 @@ function isEmail(email: string) {
   );
   return emailRegex.test(email);
 }
+function validateCompanyName(companyName: string) {
+  const companyNameRegex = new RegExp(/^[A-Za-z0-9]+$/);
+  return companyNameRegex.test(companyName);
+}
 
 export default function SignUp() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get("email") as string;
+    const companyName = data.get("companyName") as string;
+    if (!validateCompanyName(companyName)) {
+      console.log("Please enter a valid company name");
+    } else {
+      console.log({
+        companyName:companyName
+      })
+    }
     if (!isEmail(email)) {
-      console.log("this is not an email");
+      console.log("Please enter a valid email");
     } else {
       console.log({
         email: email,
-        companyName: data.get("companyName"),
         userType: data.get("radio-buttons-group"),
       });
     }
