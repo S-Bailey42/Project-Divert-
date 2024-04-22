@@ -11,11 +11,11 @@ import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
-// import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { v4 as uuidv4 } from "uuid";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
+import { useState } from "react";
 import Image from "next/image";
 import companyImage from "/app/public/project divert logo.png";
 import { stringify } from "querystring";
@@ -38,37 +38,62 @@ function Copyright(props: any) {
   );
 }
 
-
+function validatePassword(password: string) {
   const passwordRegex = new RegExp(
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
   );
+  return passwordRegex.test(password);
+}
 
 export default function SignUp() {
+  const [errors, setErrors] = useState<any>(null);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const newPassword = data.get("newPassword") as string;
     const confirmNewPassword = data.get("confirmNewPassword") as string;
     const currentPassword = data.get("currentPassword") as string;
-    
-    function validatePassword(password : string) {
-      return passwordRegex.test(password);
-    }
 
     if (!validatePassword(newPassword)) {
-      console.log("Not a valid password, please match password criteria");
-    } 
-    else if (newPassword != confirmNewPassword) {
-      console.log("Passwords do not match");
+      setErrors(
+        <Alert
+          key={uuidv4()}
+          className="z-10"
+          severity="error"
+          onClose={() => {
+            setErrors(null);
+          }}
+        >
+          Passwords must be have at least: <br />
+          - 8 characters <br />
+          - 1 uppercase & 1 lowercase character <br />
+          - 1 number <br />- 1 special character
+        </Alert>
+      );
+      return;
     }
-    else {
+    if (newPassword != confirmNewPassword) {
+      setErrors(
+        <Alert
+          key={uuidv4()}
+          className="z-10"
+          severity="error"
+          onClose={() => {
+            setErrors(null);
+          }}
+        >
+          Passwords must match
+        </Alert>
+      );
+      return;
+    } else {
       console.log({
-        currentPassword:currentPassword,
-        newPassword:newPassword,
-        confirmNewPassword:confirmNewPassword
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+        confirmNewPassword: confirmNewPassword,
+        passwordsMatch: newPassword == confirmNewPassword,
       });
     }
-    
   };
 
   return (
@@ -122,13 +147,15 @@ export default function SignUp() {
               />
             </Grid>
           </Grid>
+          {errors}
+
           <Button
             className="bg-[#0473ba] font-bold hover:bg-[#ae1182] "
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            onClick={() => alert("Password successfully reset")}
+            //onClick={() => alert("Password successfully reset")}
           >
             Reset
           </Button>

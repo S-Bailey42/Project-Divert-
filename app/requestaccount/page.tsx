@@ -13,12 +13,14 @@ import Link from "@mui/material/Link";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import Grid from "@mui/material/Grid";
+import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
+import {v4 as uuidv4} from 'uuid';
 // import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
+import { useState } from "react";
 import Image from "next/image";
 import companyImage from "/app/public/project divert logo.png";
 
@@ -52,25 +54,68 @@ function validateCompanyName(companyName: string) {
 }
 
 export default function SignUp() {
+  const [errors, setErrors] = useState<any>(null);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get("email") as string;
     const companyName = data.get("companyName") as string;
+    const radioButton = data.get("radio-buttons-group");
+
     if (!validateCompanyName(companyName)) {
-      console.log("Please enter a valid company name");
+      setErrors(
+        <Alert
+            key={uuidv4()}
+            className="z-10"
+            severity="error"
+            onClose={() => {
+              setErrors(null);
+            }}
+          >
+            Please enter a valid company name
+          </Alert>
+      );
+      return;
     } else {
       console.log({
-        companyName:companyName
-      })
+        companyName: companyName,
+      });
     }
     if (!isEmail(email)) {
-      console.log("Please enter a valid email");
+      setErrors(
+        <Alert
+            key={uuidv4()}
+            className="z-10"
+            severity="error"
+            onClose={() => {          
+              setErrors(null);
+            }}
+          >
+            Please enter a valid email
+          </Alert>
+      );
+      return;
     } else {
       console.log({
         email: email,
-        userType: data.get("radio-buttons-group"),
       });
+    }
+    if (radioButton == null) {
+      setErrors(<Alert
+        key={uuidv4()}
+        className="z-10"
+        severity="error"
+        onClose={() => {
+          setErrors(null);
+        }}
+      >
+        Please select an account type
+      </Alert>);
+      return;
+    } else {
+      console.log({
+        radioButton:radioButton,
+      })
     }
   };
 
@@ -139,6 +184,7 @@ export default function SignUp() {
               </FormControl>
             </Grid>
           </Grid>
+          {errors}
 
           <Button
             className="bg-[#0473ba] font-bold hover:bg-[#ae1182] "
@@ -152,6 +198,7 @@ export default function SignUp() {
           <Grid container justifyContent="flex-end"></Grid>
         </Box>
       </Box>
+
       <Copyright sx={{ mt: 5 }} />
     </Container>
   );
