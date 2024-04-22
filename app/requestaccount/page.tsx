@@ -15,7 +15,7 @@ import FormLabel from "@mui/material/FormLabel";
 import Grid from "@mui/material/Grid";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 // import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
@@ -65,15 +65,15 @@ export default function SignUp() {
     if (!validateCompanyName(companyName)) {
       setErrors(
         <Alert
-            key={uuidv4()}
-            className="z-10"
-            severity="error"
-            onClose={() => {
-              setErrors(null);
-            }}
-          >
-            Please enter a valid company name
-          </Alert>
+          key={uuidv4()}
+          className="z-10"
+          severity="error"
+          onClose={() => {
+            setErrors(null);
+          }}
+        >
+          Please enter a valid company name
+        </Alert>
       );
       return;
     } else {
@@ -84,15 +84,15 @@ export default function SignUp() {
     if (!isEmail(email)) {
       setErrors(
         <Alert
-            key={uuidv4()}
-            className="z-10"
-            severity="error"
-            onClose={() => {          
-              setErrors(null);
-            }}
-          >
-            Please enter a valid email
-          </Alert>
+          key={uuidv4()}
+          className="z-10"
+          severity="error"
+          onClose={() => {
+            setErrors(null);
+          }}
+        >
+          Please enter a valid email
+        </Alert>
       );
       return;
     } else {
@@ -101,21 +101,38 @@ export default function SignUp() {
       });
     }
     if (radioButton == null) {
-      setErrors(<Alert
-        key={uuidv4()}
-        className="z-10"
-        severity="error"
-        onClose={() => {
-          setErrors(null);
-        }}
-      >
-        Please select an account type
-      </Alert>);
+      setErrors(
+        <Alert
+          key={uuidv4()}
+          className="z-10"
+          severity="error"
+          onClose={() => {
+            setErrors(null);
+          }}
+        >
+          Please select an account type
+        </Alert>
+      );
       return;
     } else {
       console.log({
-        radioButton:radioButton,
-      })
+        radioButton: radioButton,
+      });
+      setErrors(
+        <Alert
+          key={uuidv4()}
+          className="z-10"
+          severity="success"
+          onClose={() => {
+            setErrors(null);
+          }}
+        >
+          Account request received, thank you! <br />
+          You will hear back from us shortly
+        </Alert>
+      );
+
+      return;
     }
   };
 
