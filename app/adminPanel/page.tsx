@@ -54,11 +54,11 @@ const page = () => {
         />
 
       </div>
-      <div id='buttonAccept' className='absolute w-16 h-8 left-24 sm:left-10'>
-        <Button varient="contained" color="success">Accept</Button>
+      <div id='buttonAccept' className='absolute w-16 h-8 left-0 phone:left-28'>
+        <Button color="success">Accept</Button>
       </div>
-      <div id='buttonAccept' className='absolute w-16 h-8 left-40'>
-        <Button varient="contained" color="error">Reject</Button>
+      <div id='buttonAccept' className='absolute w-16 h-8 left-16 phone:left-48'>
+        <Button color="error">Reject</Button>
       </div>
     </div>
   )
