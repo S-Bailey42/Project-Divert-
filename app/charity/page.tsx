@@ -16,7 +16,7 @@ import values from "../../values.json"
 
 const TopBar = () => {
   return (
-    <AppBar position="sticky">
+    <AppBar>
       <Toolbar sx={{ width: "100%", maxWidth: 600, mx: "auto" }}>
         <SideDrawer />
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -35,7 +35,6 @@ const SearchMenuMobile = () => {
     handleSearchMenuClose = () => setOpenSearchMenu(false)
 
   const TopBar = () => (
-
     <Paper
       elevation={0}
       component="form"
@@ -50,9 +49,7 @@ const SearchMenuMobile = () => {
       <IconButton onClick={handleSearchMenuOpen}>
         <Icon path={mdiTune} size={1.0} />
       </IconButton>
-
     </Paper>
-
   )
 
   const SearchDrawer = () => (
@@ -60,7 +57,6 @@ const SearchMenuMobile = () => {
       <Box >
         <Button>abc</Button>
         <Button>abc</Button>
-
       </Box>
     </Drawer>
   )
@@ -68,17 +64,15 @@ const SearchMenuMobile = () => {
   return (
     <>
       <TopBar />
-
       <SearchDrawer />
     </>
-
   )
 }
 
 const ItemArea = ({ itemView, items }: { itemView: string, items: any }) => {
   if (itemView == "list") {
     return (
-      <div className="box    m-4">
+      <div className="box m-4">
         {items.map((value: any, index: number) => (
           <GridItem key={index} data={values.items[index % 6]} index={index} />
         ))}
@@ -96,7 +90,7 @@ export default function Home() {
   return (
     <>
       <div className='w-full'>
-        <AppBar position="sticky" className="">
+        <AppBar position="sticky">
           <SearchMenuMobile />
         </AppBar>
 
