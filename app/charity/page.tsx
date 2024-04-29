@@ -78,19 +78,16 @@ const SearchMenuMobile = () => {
 const ItemArea = ({ itemView, items }: { itemView: string, items: any }) => {
   if (itemView == "list") {
     return (
-      <div className=" grid flex flex-col gap-4 flex-grow  m-4">
-        {items.map((value, index) => (
-          <ListItem key={index} data={values.items[index % 6]} index={index} />
+      <div className="box    m-4">
+        {items.map((value: any, index: number) => (
+          <GridItem key={index} data={values.items[index % 6]} index={index} />
         ))}
       </div>
     )
   }
 }
 
-
 export default function Home() {
-
-
 
   const list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,]//, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
@@ -99,7 +96,7 @@ export default function Home() {
   return (
     <>
       <div className='w-full'>
-        <AppBar position="sticky" className="mt-4">
+        <AppBar position="sticky" className="">
           <SearchMenuMobile />
         </AppBar>
 
@@ -111,63 +108,18 @@ export default function Home() {
   )
 }
 
-function ListItem({ index, data }: { index: number, data: any }) {
-  return (
+const ListItem = ({ index, data }: { index: number, data: any }) => (
 
-    <Card sx={{ display: 'flex', width: "full" }}>
-      <CardMedia
-        component="img"
-        image={`/${index % 6 + 1}.jpg`}
-        sx={{ height: 250, width: 350 }}
-        title="skip"
-      />
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-
-
-        <CardContent className=" my-auto debug-border w-fit">
-          <Typography sx={{ flex: "none" }} gutterBottom variant="h5"  >
-            {`(${data.quantity}) ${data.item}`}
-          </Typography>
-          <Typography variant="body1" color="text.secondary" className="flex flex-row gap-2">
-            <Icon path={mdiAccount} size={1.0} />
-            {data.company}
-          </Typography>
-          <Typography variant="body1" color="text.secondary" className="flex flex-row gap-2">
-            <Icon path={mdiMapMarker} size={1.0} />
-            {data.location}
-          </Typography>
-          <Typography variant="body1" color="text.secondary" className="flex flex-row gap-2">
-            <Icon path={mdiPhone} size={1.0} />
-            {data.phoneNumber}
-          </Typography>
-        </CardContent>
-
-
-      </Box>
-      <CardActions className='debug-border grid ml-auto mr-0   gap-2'>
-        <Button variant="outlined" size="large">
-          More info
-        </Button>
-
-
-
-      </CardActions>
-    </Card>
-
-  )
-}
-
-function GridItem({ index, data }: { index: number, data: any }) {
-
-  return (
-    <Card >
-      <CardMedia
-        image={`/${index % 6 + 1}.jpg`}
-        sx={{ height: 200 }}
-        title="skip"
-      />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+  <Card sx={{ display: 'flex', width: "full" }}>
+    <CardMedia
+      component="img"
+      image={`/${index % 6 + 1}.jpg`}
+      sx={{ height: 250, width: 350 }}
+      title="skip"
+    />
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+      <CardContent className=" my-auto debug-border w-fit">
+        <Typography sx={{ flex: "none" }} gutterBottom variant="h5"  >
           {`(${data.quantity}) ${data.item}`}
         </Typography>
         <Typography variant="body1" color="text.secondary" className="flex flex-row gap-2">
@@ -180,14 +132,48 @@ function GridItem({ index, data }: { index: number, data: any }) {
         </Typography>
         <Typography variant="body1" color="text.secondary" className="flex flex-row gap-2">
           <Icon path={mdiPhone} size={1.0} />
-
+          {data.phoneNumber}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button>
-          More info
-        </Button>
-      </CardActions>
-    </Card>
-  )
-}
+    </Box>
+    <CardActions className='debug-border grid ml-auto mr-0   gap-2'>
+      <Button variant="outlined" size="large">
+        More info
+      </Button>
+    </CardActions>
+  </Card>
+)
+
+
+const GridItem = ({ index, data }: { index: number, data: any }) => (
+ 
+  <Card >
+    <CardMedia
+      image={`/${index % 6 + 1}.jpg`}
+      sx={{ height: 200 }}
+      title="skip"
+    />
+    <CardContent>
+      <Typography gutterBottom variant="h5" component="div">
+        {`(${data.quantity}) ${data.item}`}
+      </Typography>
+      <Typography variant="body1" color="text.secondary" className="flex flex-row gap-2">
+        <Icon path={mdiAccount} size={1.0} />
+        {data.company}
+      </Typography>
+      <Typography variant="body1" color="text.secondary" className="flex flex-row gap-2">
+        <Icon path={mdiMapMarker} size={1.0} />
+        {data.location}
+      </Typography>
+      <Typography variant="body1" color="text.secondary" className="flex flex-row gap-2">
+        <Icon path={mdiPhone} size={1.0} />
+        {data.phoneNumber}
+      </Typography>
+    </CardContent>
+    <CardActions>
+      <Button>
+        More info
+      </Button>
+    </CardActions>
+  </Card>
+)
