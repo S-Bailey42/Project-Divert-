@@ -15,14 +15,14 @@
             "phoneNumber": "07123 456789"
         },
         {
-            "item":"evil chairs",
-            "quantity":666,
-            "company": "evil contractors",
+            "item":"chairs",
+            "quantity":13,
+            "company": "contractors",
             "location": "luton",
             "phoneNumber": "07123 456789"
         },
         {
-            "item":"Frieren: Beyond Journeys End™ limited time collectable Frieren plush",
+            "item":"Desk",
             "quantity":1,
             "company": "best buildings birmingham",
             "location": "birmingham",
