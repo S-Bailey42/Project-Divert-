@@ -5,19 +5,24 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
+import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 import Checkbox from "@mui/material/Checkbox";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-// import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { v4 as uuidv4 } from "uuid";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
+import { useState } from "react";
 import Image from "next/image";
+import Alert from "@mui/material/Alert";
 import companyImage from "/app/public/project divert logo.png";
-import { Alert } from "@mui/material";
 
 function Copyright(props: any) {
   return (
@@ -45,16 +50,30 @@ function isEmail(email: string) {
 }
 
 export default function SignUp() {
+  const [error, setError] = useState<any>(null);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get("email") as string;
+    const password = data.get("password") as string;
     if (!isEmail(email)) {
-      console.log("this is not an email");
+      setError(
+        <Alert
+          key={uuidv4()}
+          className="z-10"
+          severity="error"
+          onClose={() => {
+            setError(null);
+          }}
+        >
+          Please enter a valid email
+        </Alert>
+      );
+      return;
     } else {
       console.log({
         email: email,
-        password: data.get("password"),
+        password: password,
       });
     }
   };
@@ -100,9 +119,21 @@ export default function SignUp() {
                 autoComplete="new-password"
               />
             </Grid>
+            <Grid>
+              <Grid item xs={12}>
+                <FormGroup>
+                  <FormControlLabel
+                    control={<Checkbox />}
+                    label="Remember me"
+                    name="rememberMe"
+                  />
+                </FormGroup>
+              </Grid>
+            </Grid>
           </Grid>
+          {error}
           <Button
-            className="bg-[#0473ba] font-bold hover:bg-[#ae1182] "
+            className="bg-[#0473ba] font-bold hover:bg-[#ae1182] " //hover doesn't work and I don't know why
             type="submit"
             fullWidth
             variant="contained"
