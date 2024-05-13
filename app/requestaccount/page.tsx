@@ -8,13 +8,20 @@ import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem, { menuItemClasses } from "@mui/material/MenuItem";
+import OutlinedInput from "@mui/material/OutlinedInput";
 import Checkbox from "@mui/material/Checkbox";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import InputAdornment from "@mui/material/InputAdornment";
 import Link from "@mui/material/Link";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import Grid from "@mui/material/Grid";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { v4 as uuidv4 } from "uuid";
 // import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from "@mui/material/Typography";
@@ -23,6 +30,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
 import Image from "next/image";
 import companyImage from "/app/public/project divert logo.png";
+import { IconButton } from "@mui/material";
 
 function Copyright(props: any) {
   return (
@@ -53,6 +61,13 @@ function validateCompanyName(companyName: string) {
   return companyNameRegex.test(companyName);
 }
 
+function validatePassword(password: string) {
+  const passwordRegex = new RegExp(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+  );
+  return passwordRegex.test(password);
+}
+
 export default function SignUp() {
   const [errors, setErrors] = useState<any>(null);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -60,7 +75,8 @@ export default function SignUp() {
     const data = new FormData(event.currentTarget);
     const email = data.get("email") as string;
     const companyName = data.get("companyName") as string;
-    const radioButton = data.get("radio-buttons-group");
+    const password = data.get("password") as string;
+    const phone = data.get("phone") as string;
 
     if (!validateCompanyName(companyName)) {
       setErrors(
@@ -76,11 +92,8 @@ export default function SignUp() {
         </Alert>
       );
       return;
-    } else {
-      console.log({
-        companyName: companyName,
-      });
     }
+
     if (!isEmail(email)) {
       setErrors(
         <Alert
@@ -95,12 +108,8 @@ export default function SignUp() {
         </Alert>
       );
       return;
-    } else {
-      console.log({
-        email: email,
-      });
     }
-    if (radioButton == null) {
+    if (accountType == "") {
       setErrors(
         <Alert
           key={uuidv4()}
@@ -116,7 +125,11 @@ export default function SignUp() {
       return;
     } else {
       console.log({
-        radioButton: radioButton,
+        companyName: companyName,
+        email: email,
+        phone: phone,
+        password: password,
+        accountType: accountType,
       });
       setErrors(
         <Alert
@@ -134,6 +147,22 @@ export default function SignUp() {
 
       return;
     }
+  };
+
+  const [accountType, setAccountType] = React.useState("");
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setAccountType(event.target.value as string);
+  };
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
   };
 
   return (
@@ -166,6 +195,7 @@ export default function SignUp() {
                 autoComplete="companyName"
               />
             </Grid>
+
             <Grid item xs={12}>
               <TextField
                 required
@@ -173,31 +203,68 @@ export default function SignUp() {
                 id="email"
                 label="Email Address"
                 name="email"
+                type="email"
                 autoComplete="email"
               />
             </Grid>
+
             <Grid item xs={12}>
-              <FormControl>
-                <FormLabel id="demo-radio-buttons-group-label">
+              <TextField
+                required
+                fullWidth
+                id="phone"
+                label="Contact Number"
+                name="phone"
+                type="tel"
+                autoComplete="phone"
+              />
+            </Grid>
+
+            <FormControl
+              sx={{ m: 2, width: "25ch" }}
+              variant="outlined"
+              required
+            >
+              <InputLabel htmlFor="outlined-adornment-password">
+                Password
+              </InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-password"
+                fullWidth
+                type={showPassword ? "text" : "password"}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Password"
+              />
+            </FormControl>
+
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <InputLabel id="selectAccountInputLabel" required>
                   Account Type
-                </FormLabel>
-                <RadioGroup
-                  id="accType"
-                  aria-labelledby="demo-radio-buttons-group-label"
-                  defaultValue="female"
-                  name="radio-buttons-group"
+                </InputLabel>
+                <Select
+                  labelId="selectAccountLabel"
+                  id="selectAccount"
+                  value={accountType}
+                  label="accountType"
+                  onChange={handleChange}
                 >
-                  <FormControlLabel
-                    value="1"
-                    control={<Radio />}
-                    label="Beneficiary"
-                  />
-                  <FormControlLabel
-                    value="2"
-                    control={<Radio />}
-                    label="Work Site"
-                  />
-                </RadioGroup>
+                  <MenuItem value={1}>Construction Client</MenuItem>
+                  <MenuItem value={2}>Charity</MenuItem>
+                  <MenuItem value={3}>School/College</MenuItem>
+                  <MenuItem value={4}>Community Group</MenuItem>
+                </Select>
               </FormControl>
             </Grid>
           </Grid>
