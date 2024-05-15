@@ -166,10 +166,10 @@ const Page = () => {
           autoHeight={true}
           initialState={{
             pagination: {
-              paginationModel: { page: 0, pageSize: 20 },
+              paginationModel: { page: 0, pageSize: 9 },
             },
           }}
-          pageSizeOptions={[20, 40]}
+          pageSizeOptions={[9, 20]}
           checkboxSelection
           onRowSelectionModelChange={(e) => setSelectedRows(e)}
         />
