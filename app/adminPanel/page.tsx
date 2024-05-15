@@ -132,8 +132,8 @@ const Page = () => {
 
   return (
     <div id="parent">
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
+      <Box sx={{ flexGrow: 1}}>
+        <AppBar position="static" sx={{bgcolor: "#85c433"}}>
           <Toolbar>
             <SideDrawer />
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -153,7 +153,7 @@ const Page = () => {
           </Toolbar>
         </AppBar>
       </Box>
-      <Box sx={{ height: "FitScreen", width: "100%", minHeight: "100%" }}>
+      <Box sx={{ height: "100%", width: "100%"}}>
         <DataGrid
           style={{
             border: "solid",

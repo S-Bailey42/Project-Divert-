@@ -63,7 +63,7 @@ function validateCompanyName(companyName: string) {
 
 function validatePassword(password: string) {
   const passwordRegex = new RegExp(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+    /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
   );
   return passwordRegex.test(password);
 }
@@ -109,6 +109,41 @@ export default function SignUp() {
       );
       return;
     }
+
+    if (phone == null) {
+      setErrors(
+        <Alert
+          key={uuidv4()}
+          className="z-10"
+          severity="error"
+          onClose={() => {
+            setErrors(null);
+          }}
+        >
+          Please enter a phone number
+        </Alert>
+      );
+    }
+
+    if (!validatePassword(password)) {
+      setErrors(
+        <Alert
+          key={uuidv4()}
+          className="z-10"
+          severity="error"
+          onClose={() => {
+            setErrors(null);
+          }}
+        >
+          Passwords must be have at least: <br />
+          - 8 characters <br />
+          - 1 uppercase & 1 lowercase character <br />
+          - 1 number
+        </Alert>
+      );
+      return;
+    }
+
     if (accountType == "") {
       setErrors(
         <Alert
@@ -170,7 +205,7 @@ export default function SignUp() {
       <CssBaseline />
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 2,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -221,7 +256,7 @@ export default function SignUp() {
             </Grid>
 
             <FormControl
-              sx={{ m: 2, width: "25ch" }}
+              sx={{ mt: 2, ml: 2, width: "45ch" }}
               variant="outlined"
               required
             >
@@ -245,6 +280,7 @@ export default function SignUp() {
                   </InputAdornment>
                 }
                 label="Password"
+                name="password"
               />
             </FormControl>
 
@@ -275,7 +311,7 @@ export default function SignUp() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 3 }}
           >
             Request Access
           </Button>
@@ -283,7 +319,7 @@ export default function SignUp() {
         </Box>
       </Box>
 
-      <Copyright sx={{ mt: 5 }} />
+      <Copyright sx={{ mt: 2 }} />
     </Container>
   );
 }

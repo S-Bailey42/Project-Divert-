@@ -135,7 +135,7 @@ const Page = () => {
           </Toolbar>
         </AppBar>
       </Box>
-      <Box sx={{ height: "FitScreen", width: "100%", minHeight: "100%" }}>
+      <Box sx={{ height: "100%", width: "100%"}}>
         <DataGrid
           style={{
             border: "solid",
@@ -148,10 +148,10 @@ const Page = () => {
           autoHeight={true}
           initialState={{
             pagination: {
-              paginationModel: { page: 0, pageSize: 20 },
+              paginationModel: { page: 0, pageSize: 9 },
             },
           }}
-          pageSizeOptions={[20, 40]}
+          pageSizeOptions={[9, 20]}
         />
       </Box>
     </div>
