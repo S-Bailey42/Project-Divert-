@@ -147,7 +147,7 @@ const Page = () => {
             >
               Accept
             </Button>
-            <Button variant="contained" color="error">
+            <Button variant="contained" color="error" onClick={handleClick}>
               Reject
             </Button>
           </Toolbar>
