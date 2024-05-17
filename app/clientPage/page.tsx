@@ -1,162 +1,178 @@
-'use client'
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import companyImage from "/app/public/project divert logo.png";
+"use client"
+import * as React from "react";
+import { AppBar, Box, Button, IconButton, Toolbar, Typography, Menu, MenuList, MenuItem } from "@mui/material";
+import { useState, MouseEvent } from "react";
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
+import Image from "next/image";
+import companyImage from "/app/public/encore.png";
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+function App() {
 
-function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [anchorNav, setAnchorNav] = useState<null | HTMLElement>(null);
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
+  const openMenu = (event: MouseEvent<HTMLElement>) => {
+    setAnchorNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
+  const closeMenu = () => {
+    setAnchorNav(null);
+  }
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+  const [settingsNav, setSettingsNav] = useState<null | HTMLElement>(null);
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const openSettings = (event: MouseEvent<HTMLElement>) => {
+    setSettingsNav(event.currentTarget);
+  };
+  const closeSettings = () => {
+    setSettingsNav(null);
   };
 
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            LOGO
-          </Typography>
+    <Box>
+      <AppBar position="static" elevation={0} sx={{ bgcolor: "#85c433" }}>
+        <Toolbar>
+          <IconButton color='inherit' size="large" edge='start' aria-label="addItem" sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <DashboardIcon />
+          </IconButton>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
+          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+            <IconButton size="large" edge='start' onClick={openMenu}>
+              <MenuIcon></MenuIcon>
             </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
+            <Menu open={Boolean(anchorNav)} onClose={closeMenu} sx={{ display: { xs: 'flex', md: 'none' } }}>
+              <MenuList>
+                <MenuItem>Upload Item</MenuItem>
+                <MenuItem>Help</MenuItem>
+                <MenuItem>Logout</MenuItem>
+              </MenuList>
             </Menu>
-          </Box>
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Dashboard
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Project Divert" src={companyImage} />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+          <Typography variant="h6" component='div' flexGrow={1}>Site Dashboard</Typography>
+
+          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+            <Image alt="Encore" src={companyImage} width={110} />
           </Box>
+
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <IconButton color="inherit"><AddAPhotoIcon /></IconButton>
+            <Button color="inherit">Help</Button>
+            <Button color="inherit">Logout</Button>
+          </Box>
+
         </Toolbar>
-      </Container>
-    </AppBar>
-  );
+      </AppBar>
+
+      <Menu open={Boolean(settingsNav)} onClose={closeSettings} sx={{ display: { xs: 'flex', md: 'none' } }}>
+        <MenuList>
+        <MenuItem>Edit site</MenuItem>
+        <MenuItem>Delete Site</MenuItem>
+        </MenuList>
+      </Menu>
+
+      <Card>
+        <CardHeader 
+        action={
+          <IconButton aria-label="settings" onClick={openSettings}>
+            <MoreVertIcon />
+          </IconButton>
+        }
+        title="Brandon Road"
+        subheader="N7 9AA"
+        />
+      </Card>
+
+      <Card>
+        <CardHeader 
+        action={
+          <IconButton aria-label="settings" onClick={openSettings}>
+            <MoreVertIcon />
+          </IconButton>
+        }
+        title="Prince William School"
+        subheader="PE8 4BS"
+        />
+      </Card>
+
+      <Card>
+        <CardHeader 
+        action={
+          <IconButton aria-label="settings" onClick={openSettings}>
+            <MoreVertIcon />
+          </IconButton>
+        }
+        title="MKUH Radiotherapy"
+        subheader="MK6 5LD"
+        />
+      </Card>
+
+      <Card>
+        <CardHeader 
+        action={
+          <IconButton aria-label="settings" onClick={openSettings}>
+            <MoreVertIcon />
+          </IconButton>
+        }
+        title="Little Reddings Primary School"
+        subheader="WD23 3PR"
+        />
+      </Card>
+
+      <Card>
+        <CardHeader 
+        action={
+          <IconButton aria-label="settings" onClick={openSettings}>
+            <MoreVertIcon />
+          </IconButton>
+        }
+        title="Harwell Campus"
+        subheader="OX"
+        />
+      </Card>
+
+      <Card>
+        <CardHeader 
+        action={
+          <IconButton aria-label="settings" onClick={openSettings}>
+            <MoreVertIcon />
+          </IconButton>
+        }
+        title="Purchase Street"
+        subheader="NW1 1HW"
+        />
+      </Card>
+
+      <Card>
+        <CardHeader 
+        action={
+          <IconButton aria-label="settings" onClick={openSettings}>
+            <MoreVertIcon />
+          </IconButton>
+        }
+        title="29 Marylebone Road"
+        subheader="N7 9AA"
+        />
+      </Card>
+
+      <Card>
+        <CardHeader 
+        action={
+          <IconButton aria-label="settings" onClick={openSettings}>
+            <MoreVertIcon />
+          </IconButton>
+        }
+        title="Crawley Innovation Centre"
+        subheader="RH10 9QL"
+        />
+      </Card>
+
+    </Box>
+  )
 }
-export default ResponsiveAppBar;
+
+export default App;
