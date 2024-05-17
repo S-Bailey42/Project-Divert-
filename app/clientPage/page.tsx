@@ -68,7 +68,7 @@ function App() {
         </Toolbar>
       </AppBar>
 
-      <Menu open={Boolean(settingsNav)} onClose={closeSettings} sx={{ display: { xs: 'flex', md: 'none' } }}>
+      <Menu open={Boolean(settingsNav)} onClose={closeSettings}>
         <MenuList>
         <MenuItem>Edit site</MenuItem>
         <MenuItem>Delete Site</MenuItem>
