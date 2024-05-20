@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";
 import * as React from "react";
 import {
@@ -11,6 +12,11 @@ import {
   MenuList,
   MenuItem,
 } from "@mui/material";
+=======
+"use client"
+
+import { AppBar, Box, Button, IconButton, Toolbar, Typography, Menu, MenuList, MenuItem } from "@mui/material";
+>>>>>>> ed03b8fbfd2ae7a0570e320491032e07c1562bb7
 import { useState, MouseEvent } from "react";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
