@@ -67,7 +67,7 @@ function validatePassword(password: string) {
 
 export default function SignUp() {
   const [errors, setErrors] = useState<any>(null);
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get("email") as string;
@@ -75,115 +75,6 @@ export default function SignUp() {
     const password = data.get("password") as string;
     const phone = data.get("phone") as string;
 
-    if (!validateCompanyName(companyName)) {
-      setErrors(
-        <Alert
-          key={uuidv4()}
-          className="z-10"
-          severity="error"
-          onClose={() => {
-            setErrors(null);
-          }}
-        >
-          Please enter a valid company name
-        </Alert>
-      );
-      return;
-    }
-
-    if (!isEmail(email)) {
-      setErrors(
-        <Alert
-          key={uuidv4()}
-          className="z-10"
-          severity="error"
-          onClose={() => {
-            setErrors(null);
-          }}
-        >
-          Please enter a valid email
-        </Alert>
-      );
-      return;
-    }
-
-    if (phone == null) {
-      setErrors(
-        <Alert
-          key={uuidv4()}
-          className="z-10"
-          severity="error"
-          onClose={() => {
-            setErrors(null);
-          }}
-        >
-          Please enter a phone number
-        </Alert>
-      );
-    }
-    /*
-    if (!validatePassword(password)) {
-      setErrors(
-        <Alert
-          key={uuidv4()}
-          className="z-10"
-          severity="error"
-          onClose={() => {
-            setErrors(null);
-          }}
-        >
-          Passwords must be have at least: <br />
-          - 8 characters <br />
-          - 1 uppercase & 1 lowercase character <br />- 1 number
-        </Alert>
-      );
-      return;
-    }*/
-
-    if (accountType == "") {
-      setErrors(
-        <Alert
-          key={uuidv4()}
-          className="z-10"
-          severity="error"
-          onClose={() => {
-            setErrors(null);
-          }}
-        >
-          Please select an account type
-        </Alert>
-      );
-      return;
-    } else {
-      const response = await fetch("http://127.0.0.1:8000/request/account", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          companyName: companyName,
-          email: email,
-          userType: accountType,
-        }),
-      });
-      console.log(email);
-      setErrors(
-        <Alert
-          key={uuidv4()}
-          className="z-10"
-          severity="success"
-          onClose={() => {
-            setErrors(null);
-          }}
-        >
-          Account request received, thank you! <br />
-          You will hear back from us shortly
-        </Alert>
-      );
-
-      return;
-    }
   };
 
   const [accountType, setAccountType] = React.useState("");
@@ -258,7 +149,7 @@ export default function SignUp() {
             </Grid>
 
             <FormControl
-              sx={{ mt: 2, ml: 2, width: "max" }}
+              sx={{ mt: 2, ml: 2, width: "45ch" }}
               variant="outlined"
               required
             >
@@ -298,9 +189,7 @@ export default function SignUp() {
                   label="accountType"
                   onChange={handleChange}
                 >
-                  <MenuItem value={"Construction"}>
-                    Construction Client
-                  </MenuItem>
+                  <MenuItem value={1}>Construction Client</MenuItem>
                   <MenuItem value={2}>Charity</MenuItem>
                   <MenuItem value={3}>School/College</MenuItem>
                   <MenuItem value={4}>Community Group</MenuItem>
