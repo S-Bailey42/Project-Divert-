@@ -132,8 +132,8 @@ const Page = () => {
 
   return (
     <div id="parent">
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
+      <Box sx={{ flexGrow: 1}}>
+        <AppBar position="static" sx={{bgcolor: "#85c433"}}>
           <Toolbar>
             <SideDrawer />
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -147,13 +147,13 @@ const Page = () => {
             >
               Accept
             </Button>
-            <Button variant="contained" color="error">
+            <Button variant="contained" color="error" onClick={handleClick}>
               Reject
             </Button>
           </Toolbar>
         </AppBar>
       </Box>
-      <Box sx={{ height: "FitScreen", width: "100%", minHeight: "100%" }}>
+      <Box sx={{ height: "100%", width: "100%"}}>
         <DataGrid
           style={{
             border: "solid",
@@ -166,10 +166,10 @@ const Page = () => {
           autoHeight={true}
           initialState={{
             pagination: {
-              paginationModel: { page: 0, pageSize: 20 },
+              paginationModel: { page: 0, pageSize: 9 },
             },
           }}
-          pageSizeOptions={[20, 40]}
+          pageSizeOptions={[9, 20]}
           checkboxSelection
           onRowSelectionModelChange={(e) => setSelectedRows(e)}
         />
