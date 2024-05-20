@@ -17,7 +17,7 @@ export function SideDrawer() {
       edge="start"
       color="inherit"
       aria-label="menu"
-      sx={{ mr: 2 }}
+      sx={{ m: 0 }}
     >
       <MenuIcon />
     </IconButton>
@@ -33,7 +33,7 @@ export function SideDrawer() {
         >
           Log out
         </Button>
-        <div className="mb-0 mt-auto flex w-10 h-10 debug-border"></div>
+        <div className="mb-0 mt-auto flex w-10 h-10 debug-border"/>
       </Box>
     </Drawer>
   );
