@@ -30,6 +30,7 @@ import { useState } from "react";
 import Image from "next/image";
 import companyImage from "/app/public/project divert logo.png";
 import { IconButton } from "@mui/material";
+import { METHODS, STATUS_CODES } from "http";
 
 function Copyright(props: any) {
   return (
@@ -167,20 +168,55 @@ export default function SignUp() {
           userType: accountType,
         }),
       });
-      console.log(email);
-      setErrors(
-        <Alert
-          key={uuidv4()}
-          className="z-10"
-          severity="success"
-          onClose={() => {
-            setErrors(null);
-          }}
-        >
-          Account request received, thank you! <br />
-          You will hear back from us shortly
-        </Alert>
-      );
+
+      switch (response.status) {
+        case 200:
+          setErrors(
+            <Alert
+              key={uuidv4()}
+              className="z-10"
+              severity="success"
+              onClose={() => {
+                setErrors(null);
+              }}
+            >
+              Account request received, thank you! <br />
+              You will hear back from us shortly
+            </Alert>
+          );
+          break;
+          
+        case 422:
+          setErrors(
+            <Alert
+              key={uuidv4()}
+              className="z-10"
+              severity="error"
+              onClose={() => {
+                setErrors(null);
+              }}
+            >
+              422 - Unprocessable Content
+            </Alert>
+          );
+          break;
+
+        case 404:
+          setErrors(
+            <Alert
+              key={uuidv4()}
+              className="z-10"
+              severity="error"
+              onClose={() => {
+                setErrors(null);
+              }}
+            >
+              404 - Not found
+            </Alert>
+          );
+          break;
+
+      }
 
       return;
     }
