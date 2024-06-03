@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useEffect } from 'react';
 import Avatar from "@mui/material/Avatar";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -31,6 +32,7 @@ import Image from "next/image";
 import companyImage from "/app/public/project divert logo.png";
 import { IconButton } from "@mui/material";
 import { METHODS, STATUS_CODES } from "http";
+import { list } from "postcss";
 
 function Copyright(props: any) {
   return (
@@ -68,6 +70,18 @@ function validatePassword(password: string) {
 
 export default function SignUp() {
   const [errors, setErrors] = useState<any>(null);
+  const [userTypes, setUserType] = useState<Array<object>>([]);
+  useEffect(() => {
+    async function fetchMyAPI() {
+      let response = await fetch("http://127.0.0.1:8000/resource/userTypes")
+      const data = await response.json()
+      if (response.ok) {
+        setUserType(data)
+      }
+    }
+
+    fetchMyAPI()
+  },[])
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -185,7 +199,7 @@ export default function SignUp() {
             </Alert>
           );
           break;
-          
+
         case 422:
           setErrors(
             <Alert
@@ -237,7 +251,6 @@ export default function SignUp() {
   ) => {
     event.preventDefault();
   };
-
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -334,12 +347,9 @@ export default function SignUp() {
                   label="accountType"
                   onChange={handleChange}
                 >
-                  <MenuItem value={"Construction"}>
-                    Construction Client
-                  </MenuItem>
-                  <MenuItem value={2}>Charity</MenuItem>
-                  <MenuItem value={3}>School/College</MenuItem>
-                  <MenuItem value={4}>Community Group</MenuItem>
+                  {userTypes.map(
+                    (type) => <MenuItem key={uuidv4()} value={type.id}>{type.Name}</MenuItem>
+                  )}
                 </Select>
               </FormControl>
             </Grid>
