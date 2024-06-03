@@ -7,37 +7,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import Icon from "@mdi/react";
-<<<<<<< HEAD
-import {
-  mdiAccount,
-  mdiChevronDown,
-  mdiChevronUp,
-  mdiEmail,
-  mdiMagnify,
-  mdiMapMarker,
-  mdiMenu,
-  mdiPhone,
-  mdiTune,
-} from "@mdi/js";
-import { useEffect } from "react";
-import {
-  AppBar,
-  Box,
-  Divider,
-  Drawer,
-  IconButton,
-  InputBase,
-  Pagination,
-  Paper,
-  Slider,
-  Stack,
-  TextField,
-  Toolbar,
-} from "@mui/material";
-import { SideDrawer } from "@/components/components";
-import { useState } from "react";
-import values from "../../values.json";
-=======
 import { mdiAccount, mdiChevronDown, mdiChevronUp, mdiEmail, mdiMagnify, mdiMapMarker, mdiMenu, mdiPhone, mdiTune } from '@mdi/js';
 
 import { Modal, AppBar, Box, Divider, Drawer, IconButton, InputBase, Pagination, Paper, Slider, Stack, TextField, Toolbar, MobileStepper } from '@mui/material';
@@ -88,7 +57,6 @@ const images = [
       'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
   },
 ];
->>>>>>> ed03b8fbfd2ae7a0570e320491032e07c1562bb7
 
 const TopBar = () => {
   return (
@@ -96,11 +64,6 @@ const TopBar = () => {
       <Toolbar sx={{ width: "100%", maxWidth: 600, mx: "auto" }}>
         <SideDrawer />
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-<<<<<<< HEAD
-          Title
-=======
-
->>>>>>> ed03b8fbfd2ae7a0570e320491032e07c1562bb7
         </Typography>
       </Toolbar>
     </AppBar>
@@ -197,15 +160,9 @@ const ListItem = ({ index, data }: { index: number; data: any }) => (
       sx={{ height: 250, width: 350 }}
       title="skip"
     />
-<<<<<<< HEAD
-    <Box sx={{ display: "flex", flexDirection: "column" }}>
-      <CardContent className=" my-auto debug-border w-fit">
-        <Typography sx={{ flex: "none" }} gutterBottom variant="h5">
-=======
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <CardContent className=" my-auto  w-fit">
         <Typography sx={{ flex: "none" }} gutterBottom variant="h5"  >
->>>>>>> ed03b8fbfd2ae7a0570e320491032e07c1562bb7
           {`(${data.quantity}) ${data.item}`}
         </Typography>
         <Typography
@@ -234,11 +191,7 @@ const ListItem = ({ index, data }: { index: number; data: any }) => (
         </Typography>
       </CardContent>
     </Box>
-<<<<<<< HEAD
-    <CardActions className="debug-border grid ml-auto mr-0   gap-2">
-=======
     <CardActions className=' grid ml-auto mr-0   gap-2'>
->>>>>>> ed03b8fbfd2ae7a0570e320491032e07c1562bb7
       <Button variant="outlined" size="large">
         More info
       </Button>
@@ -246,10 +199,6 @@ const ListItem = ({ index, data }: { index: number; data: any }) => (
   </Card>
 );
 
-<<<<<<< HEAD
-const GridItem = ({ index, data }: { index: number; data: any }) => (
-  <Card>
-=======
 const ItemInfo = () => {
   const [activeStep, setActiveStep] = useState(0);
   const maxSteps = images.length;
@@ -367,7 +316,6 @@ const ItemDialog = () => {
 const GridItem = ({ index, data }: { index: number, data: any }) => (
 
   <Card >
->>>>>>> ed03b8fbfd2ae7a0570e320491032e07c1562bb7
     <CardMedia
       image={`/${(index % 6) + 1}.jpg`}
       sx={{ height: 200 }}
@@ -403,11 +351,7 @@ const GridItem = ({ index, data }: { index: number, data: any }) => (
       </Typography>
     </CardContent>
     <CardActions>
-<<<<<<< HEAD
-      <Button>More info</Button>
-=======
       <ItemDialog />
->>>>>>> ed03b8fbfd2ae7a0570e320491032e07c1562bb7
     </CardActions>
   </Card>
 );
