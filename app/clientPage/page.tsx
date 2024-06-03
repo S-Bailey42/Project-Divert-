@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 "use client";
 import * as React from "react";
 import {
@@ -12,11 +11,6 @@ import {
   MenuList,
   MenuItem,
 } from "@mui/material";
-=======
-"use client"
-
-import { AppBar, Box, Button, IconButton, Toolbar, Typography, Menu, MenuList, MenuItem } from "@mui/material";
->>>>>>> ed03b8fbfd2ae7a0570e320491032e07c1562bb7
 import { useState, MouseEvent } from "react";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
@@ -99,7 +93,7 @@ function App() {
         </MenuList>
       </Menu>
 
-      <Button sx={{ color: "#6e6e6e" }}>Add new site</Button>
+      <Button sx={{ color: "#6e6e6e" }} href="http://localhost:3000/createSite">Add new site</Button>
 
       <Card>
         <CardHeader
@@ -108,7 +102,7 @@ function App() {
               <MoreVertIcon />
             </IconButton>
           }
-          title="Brandon Road"
+          title = <Button sx={{color:"black", fontSize:20}}> Brandon Road </Button>
           subheader="N7 9AA"
         />
       </Card>
@@ -120,7 +114,7 @@ function App() {
               <MoreVertIcon />
             </IconButton>
           }
-          title="Prince William School"
+          title = <Button sx={{color:"black", fontSize:20}}>Prince William School </Button>
           subheader="PE8 4BS"
         />
       </Card>
@@ -132,7 +126,7 @@ function App() {
               <MoreVertIcon />
             </IconButton>
           }
-          title="MKUH Radiotherapy"
+          title = <Button sx={{color:"black", fontSize:20}} href={`http://localhost:3000/workSite/${1}`}>MKUH Radiotherapy </Button>
           subheader="MK6 5LD"
         />
       </Card>
@@ -144,7 +138,7 @@ function App() {
               <MoreVertIcon />
             </IconButton>
           }
-          title="Little Reddings Primary School"
+          title = <Button sx={{color:"black", fontSize:20}}>Little Reddings Primary School </Button>
           subheader="WD23 3PR"
         />
       </Card>
@@ -156,7 +150,7 @@ function App() {
               <MoreVertIcon />
             </IconButton>
           }
-          title="Harwell Campus"
+          title = <Button sx={{color:"black", fontSize:20}}> Harwell Campus </Button>
           subheader="OX"
         />
       </Card>
@@ -168,7 +162,7 @@ function App() {
               <MoreVertIcon />
             </IconButton>
           }
-          title="Purchase Street"
+          title = <Button sx={{color:"black", fontSize:20}}> Purchase Street </Button>
           subheader="NW1 1HW"
         />
       </Card>
@@ -180,7 +174,7 @@ function App() {
               <MoreVertIcon />
             </IconButton>
           }
-          title="29 Marylebone Road"
+          title = <Button sx={{color:"black", fontSize:20}}> 29 Marylebone Road </Button>
           subheader="N7 9AA"
         />
       </Card>
@@ -192,7 +186,7 @@ function App() {
               <MoreVertIcon />
             </IconButton>
           }
-          title="Crawley Innovation Centre"
+          title = <Button sx={{color:"black", fontSize:20}}>Crawley Innovation Centre </Button>
           subheader="RH10 9QL"
         />
       </Card>
