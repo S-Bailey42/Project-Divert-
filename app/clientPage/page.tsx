@@ -10,6 +10,7 @@ import {
   Menu,
   MenuList,
   MenuItem,
+  Alert,
 } from "@mui/material";
 import { useState, MouseEvent } from "react";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -20,7 +21,7 @@ import companyImage from "/app/public/encore.png";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function App() {
   const [anchorNav, setAnchorNav] = useState<null | HTMLElement>(null);
@@ -40,6 +41,7 @@ function App() {
   const closeSettings = () => {
     setSettingsNav(null);
   };
+
 
   return (
     <Box>
@@ -86,11 +88,22 @@ function App() {
         </Toolbar>
       </AppBar>
 
-      <Menu open={Boolean(settingsNav)} onClose={closeSettings}>
-        <MenuList>
-          <MenuItem>Edit site</MenuItem>
-          <MenuItem>Delete Site</MenuItem>
-        </MenuList>
+      <Menu open={Boolean(settingsNav)}>
+        <Alert
+          severity="error"
+          action={
+            <>
+            <Button color="inherit" size="small" onClick={closeSettings}>
+              Yes
+            </Button>
+            <Button color="inherit" size="small" onClick={closeSettings}>
+              No
+            </Button>
+            </>
+          }
+        >
+          Are you sure you want to remove this site?
+        </Alert>
       </Menu>
 
       <Button sx={{ color: "#6e6e6e" }} href="http://localhost:3000/createSite">Add new site</Button>
@@ -99,10 +112,10 @@ function App() {
         <CardHeader
           action={
             <IconButton aria-label="settings" onClick={openSettings}>
-              <MoreVertIcon />
+              <DeleteIcon />
             </IconButton>
           }
-          title = <Button sx={{color:"black", fontSize:20}}> Brandon Road </Button>
+          title=<Button sx={{ color: "black", fontSize: 20 }} href={`http://localhost:3000/workSite`}> Brandon Road </Button>
           subheader="N7 9AA"
         />
       </Card>
@@ -111,10 +124,10 @@ function App() {
         <CardHeader
           action={
             <IconButton aria-label="settings" onClick={openSettings}>
-              <MoreVertIcon />
+              <DeleteIcon />
             </IconButton>
           }
-          title = <Button sx={{color:"black", fontSize:20}}>Prince William School </Button>
+          title=<Button sx={{ color: "black", fontSize: 20 }} href={`http://localhost:3000/workSite`}>Prince William School </Button>
           subheader="PE8 4BS"
         />
       </Card>
@@ -123,10 +136,10 @@ function App() {
         <CardHeader
           action={
             <IconButton aria-label="settings" onClick={openSettings}>
-              <MoreVertIcon />
+              <DeleteIcon />
             </IconButton>
           }
-          title = <Button sx={{color:"black", fontSize:20}} href={`http://localhost:3000/workSite/${1}`}>MKUH Radiotherapy </Button>
+          title=<Button sx={{ color: "black", fontSize: 20 }} href={`http://localhost:3000/workSite`}>MKUH Radiotherapy </Button>
           subheader="MK6 5LD"
         />
       </Card>
@@ -135,10 +148,10 @@ function App() {
         <CardHeader
           action={
             <IconButton aria-label="settings" onClick={openSettings}>
-              <MoreVertIcon />
+              <DeleteIcon />
             </IconButton>
           }
-          title = <Button sx={{color:"black", fontSize:20}}>Little Reddings Primary School </Button>
+          title=<Button sx={{ color: "black", fontSize: 20 }} href={`http://localhost:3000/workSite`}>Little Reddings Primary School </Button>
           subheader="WD23 3PR"
         />
       </Card>
@@ -147,10 +160,10 @@ function App() {
         <CardHeader
           action={
             <IconButton aria-label="settings" onClick={openSettings}>
-              <MoreVertIcon />
+              <DeleteIcon />
             </IconButton>
           }
-          title = <Button sx={{color:"black", fontSize:20}}> Harwell Campus </Button>
+          title=<Button sx={{ color: "black", fontSize: 20 }} href={`http://localhost:3000/workSite`}> Harwell Campus </Button>
           subheader="OX"
         />
       </Card>
@@ -159,10 +172,10 @@ function App() {
         <CardHeader
           action={
             <IconButton aria-label="settings" onClick={openSettings}>
-              <MoreVertIcon />
+              <DeleteIcon />
             </IconButton>
           }
-          title = <Button sx={{color:"black", fontSize:20}}> Purchase Street </Button>
+          title=<Button sx={{ color: "black", fontSize: 20 }} href={`http://localhost:3000/workSite`}> Purchase Street </Button>
           subheader="NW1 1HW"
         />
       </Card>
@@ -171,10 +184,10 @@ function App() {
         <CardHeader
           action={
             <IconButton aria-label="settings" onClick={openSettings}>
-              <MoreVertIcon />
+              <DeleteIcon />
             </IconButton>
           }
-          title = <Button sx={{color:"black", fontSize:20}}> 29 Marylebone Road </Button>
+          title=<Button sx={{ color: "black", fontSize: 20 }} href={`http://localhost:3000/workSite`}> 29 Marylebone Road </Button>
           subheader="N7 9AA"
         />
       </Card>
@@ -183,10 +196,10 @@ function App() {
         <CardHeader
           action={
             <IconButton aria-label="settings" onClick={openSettings}>
-              <MoreVertIcon />
+              <DeleteIcon />
             </IconButton>
           }
-          title = <Button sx={{color:"black", fontSize:20}}>Crawley Innovation Centre </Button>
+          title=<Button sx={{ color: "black", fontSize: 20 }} href={`http://localhost:3000/workSite`}>Crawley Innovation Centre </Button>
           subheader="RH10 9QL"
         />
       </Card>

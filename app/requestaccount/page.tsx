@@ -136,7 +136,7 @@ export default function SignUp() {
         </Alert>
       );
     }
-    /*
+    
     if (!validatePassword(password)) {
       setErrors(
         <Alert
@@ -153,7 +153,7 @@ export default function SignUp() {
         </Alert>
       );
       return;
-    }*/
+    }
 
     if (accountType == "") {
       setErrors(
