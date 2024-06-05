@@ -13,23 +13,18 @@ import {
   Alert,
 } from "@mui/material";
 import { useState, MouseEvent } from "react";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import MenuIcon from "@mui/icons-material/Menu";
 import Image from "next/image";
 import companyImage from "/app/public/encore.png";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
-import CardContent from "@mui/material/CardContent";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { cursorTo } from "readline";
 
 const encoreBlue = '#3382c4';
 const encoreRed = '#f04e43';
 const encorePurple = '#883995';
 const encoreGreen = '#93bf3e';
 const encoreGrey = '#444c52';
-
 
 function App() {
   const [anchorNav, setAnchorNav] = useState<null | HTMLElement>(null);
@@ -74,6 +69,7 @@ function App() {
               onClose={closeMenu}
             >
               <MenuList>
+              <a href="http://localhost:3000/siteHistory"><MenuItem>View Site History</MenuItem></a>
                 <MenuItem>Help</MenuItem>
                 <a href="http://localhost:3000/login"><MenuItem>Logout</MenuItem></a>
               </MenuList>
@@ -110,7 +106,7 @@ function App() {
               <DeleteIcon />
             </IconButton>
           }
-          title=<Button sx={{ color: "black", fontSize: 20 }} href={`http://localhost:3000/workSite`}> Brandon Road </Button>
+          title=<Button sx={{ color: encoreGrey, fontSize: 20 }} href={`http://localhost:3000/workSite`}> Brandon Road </Button>
           subheader="N7 9AA"
         />
       </Card>
@@ -122,7 +118,7 @@ function App() {
               <DeleteIcon />
             </IconButton>
           }
-          title=<Button sx={{ color: "black", fontSize: 20 }} href={`http://localhost:3000/workSite`}>Prince William School </Button>
+          title=<Button sx={{ color: encoreGrey, fontSize: 20 }} href={`http://localhost:3000/workSite`}>Prince William School </Button>
           subheader="PE8 4BS"
         />
       </Card>
@@ -134,7 +130,7 @@ function App() {
               <DeleteIcon />
             </IconButton>
           }
-          title=<Button sx={{ color: "black", fontSize: 20 }} href={`http://localhost:3000/workSite`}>MKUH Radiotherapy </Button>
+          title=<Button sx={{ color: encoreGrey, fontSize: 20 }} href={`http://localhost:3000/workSite`}>MKUH Radiotherapy </Button>
           subheader="MK6 5LD"
         />
       </Card>
@@ -146,7 +142,7 @@ function App() {
               <DeleteIcon />
             </IconButton>
           }
-          title=<Button sx={{ color: "black", fontSize: 20 }} href={`http://localhost:3000/workSite`}>Little Reddings Primary School </Button>
+          title=<Button sx={{ color: encoreGrey, fontSize: 20 }} href={`http://localhost:3000/workSite`}>Little Reddings Primary School </Button>
           subheader="WD23 3PR"
         />
       </Card>
@@ -158,7 +154,7 @@ function App() {
               <DeleteIcon />
             </IconButton>
           }
-          title=<Button sx={{ color: "black", fontSize: 20 }} href={`http://localhost:3000/workSite`}> Harwell Campus </Button>
+          title=<Button sx={{ color: encoreGrey, fontSize: 20 }} href={`http://localhost:3000/workSite`}> Harwell Campus </Button>
           subheader="OX"
         />
       </Card>
@@ -170,7 +166,7 @@ function App() {
               <DeleteIcon />
             </IconButton>
           }
-          title=<Button sx={{ color: "black", fontSize: 20 }} href={`http://localhost:3000/workSite`}> Purchase Street </Button>
+          title=<Button sx={{ color: encoreGrey, fontSize: 20 }} href={`http://localhost:3000/workSite`}> Purchase Street </Button>
           subheader="NW1 1HW"
         />
       </Card>
@@ -182,7 +178,7 @@ function App() {
               <DeleteIcon />
             </IconButton>
           }
-          title=<Button sx={{ color: "black", fontSize: 20 }} href={`http://localhost:3000/workSite`}> 29 Marylebone Road </Button>
+          title=<Button sx={{ color: encoreGrey, fontSize: 20 }} href={`http://localhost:3000/workSite`}> 29 Marylebone Road </Button>
           subheader="N7 9AA"
         />
       </Card>
@@ -194,7 +190,7 @@ function App() {
               <DeleteIcon />
             </IconButton>
           }
-          title=<Button sx={{ color: "black", fontSize: 20 }} href={`http://localhost:3000/workSite`}>Crawley Innovation Centre </Button>
+          title=<Button sx={{ color: encoreGrey, fontSize: 20 }} href={`http://localhost:3000/workSite`}>Crawley Innovation Centre </Button>
           subheader="RH10 9QL"
         />
       </Card>

@@ -161,6 +161,7 @@ export default function AddItem() {
               onClose={closeMenu}
             >
               <MenuList>
+              <a href="http://localhost:3000/siteHistory"><MenuItem>View Site History</MenuItem></a>
                 <MenuItem>Help</MenuItem>
                 <a href="http://localhost:3000/login"><MenuItem>Logout</MenuItem></a>
               </MenuList>
