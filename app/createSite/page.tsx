@@ -27,6 +27,13 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 
+const encoreBlue = '#3382c4';
+const encoreRed = '#f04e43';
+const encorePurple = '#883995';
+const encoreGreen = '#93bf3e';
+const encoreGrey = '#444c52';
+
+
 function isEmail(email: string) {
     const emailRegex = new RegExp(
         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -56,6 +63,15 @@ function validatePhoneNumber(phone: string) {
 
 export default function App() {
 
+    const [anchorNav, setAnchorNav] = useState<null | HTMLElement>(null);
+
+    const openMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorNav(event.currentTarget);
+    };
+    const closeMenu = () => {
+        setAnchorNav(null);
+    };
+
     const [errors, setErrors] = useState<any>(null);
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -72,35 +88,35 @@ export default function App() {
 
         if (!validateSiteName(siteName)) {
             setErrors(
-              <Alert
-                key={uuidv4()}
-                className="z-10"
-                severity="error"
-                onClose={() => {
-                  setErrors(null);
-                }}
-              >
-                Please enter a site name
-              </Alert>
+                <Alert
+                    key={uuidv4()}
+                    className="z-10"
+                    severity="error"
+                    onClose={() => {
+                        setErrors(null);
+                    }}
+                >
+                    Please enter a site name
+                </Alert>
             );
             return;
-          }
+        }
 
         if (!validateManagerName(projectManager)) {
             setErrors(
-              <Alert
-                key={uuidv4()}
-                className="z-10"
-                severity="error"
-                onClose={() => {
-                  setErrors(null);
-                }}
-              >
-                Please enter a Project Manager
-              </Alert>
+                <Alert
+                    key={uuidv4()}
+                    className="z-10"
+                    severity="error"
+                    onClose={() => {
+                        setErrors(null);
+                    }}
+                >
+                    Please enter a Project Manager
+                </Alert>
             );
             return;
-          }
+        }
 
         if (!isEmail(email)) {
             setErrors(
@@ -155,16 +171,32 @@ export default function App() {
     return (
 
         <>
-            <AppBar position="static" elevation={0} sx={{ bgcolor: "#85c433" }}>
+            <AppBar position="static" elevation={0} sx={{ bgcolor: "#93bf3e" }}>
                 <Toolbar>
-                    <Typography variant="h6" component="div" flexGrow={1}>
+                    <Box>
+                        <a href="http://localhost:3000/clientPage">
+                            <Image alt="Encore" src={companyImage} width={110} />
+                        </a>
+                    </Box>
+
+                    <Typography variant="h6" component="div" flexGrow={1} align="center">
                         Create New Site
                     </Typography>
 
                     <Box>
-                        <Image alt="Encore" src={companyImage} width={110} />
+                        <IconButton size="large" edge="start" onClick={openMenu}>
+                            <MenuIcon></MenuIcon>
+                        </IconButton>
+                        <Menu
+                            open={Boolean(anchorNav)}
+                            onClose={closeMenu}
+                        >
+                            <MenuList>
+                                <MenuItem>Help</MenuItem>
+                                <a href="http://localhost:3000/login"><MenuItem>Logout</MenuItem></a>
+                            </MenuList>
+                        </Menu>
                     </Box>
-
                 </Toolbar>
             </AppBar>
 
@@ -251,7 +283,7 @@ export default function App() {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3 }}
-                    //href="http://localhost:3000/clientPage"
+                    href="http://localhost:3000/clientPage"
                     >
                         Add Site to Dashboard
                     </Button>

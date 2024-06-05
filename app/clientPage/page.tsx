@@ -22,6 +22,14 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import DeleteIcon from '@mui/icons-material/Delete';
+import { cursorTo } from "readline";
+
+const encoreBlue = '#3382c4';
+const encoreRed = '#f04e43';
+const encorePurple = '#883995';
+const encoreGreen = '#93bf3e';
+const encoreGrey = '#444c52';
+
 
 function App() {
   const [anchorNav, setAnchorNav] = useState<null | HTMLElement>(null);
@@ -45,46 +53,33 @@ function App() {
 
   return (
     <Box>
-      <AppBar position="static" elevation={0} sx={{ bgcolor: "#85c433" }}>
+      <AppBar position="static" elevation={0} sx={{ bgcolor: "#93bf3e" }}>
         <Toolbar>
-          <IconButton
-            color="inherit"
-            size="large"
-            edge="start"
-            aria-label="addItem"
-            sx={{ display: { xs: "none", md: "flex" } }}
-          >
-            <DashboardIcon />
-          </IconButton>
+          <Box>
+            <a href="http://localhost:3000/clientPage">
+              <Image alt="Encore" src={companyImage} width={110} />
+            </a>
+          </Box>
 
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
+          <Typography variant="h6" component="div" flexGrow={1} align="center">
+            Site Dashboard
+          </Typography>
+
+          <Box>
             <IconButton size="large" edge="start" onClick={openMenu}>
               <MenuIcon></MenuIcon>
             </IconButton>
             <Menu
               open={Boolean(anchorNav)}
               onClose={closeMenu}
-              sx={{ display: { xs: "flex", md: "none" } }}
             >
               <MenuList>
                 <MenuItem>Help</MenuItem>
-                <MenuItem>Logout</MenuItem>
+                <a href="http://localhost:3000/login"><MenuItem>Logout</MenuItem></a>
               </MenuList>
             </Menu>
           </Box>
 
-          <Typography variant="h6" component="div" flexGrow={1}>
-            Site Dashboard
-          </Typography>
-
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
-            <Image alt="Encore" src={companyImage} width={110} />
-          </Box>
-
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <Button color="inherit">Help</Button>
-            <Button color="inherit">Logout</Button>
-          </Box>
         </Toolbar>
       </AppBar>
 
@@ -93,12 +88,12 @@ function App() {
           severity="error"
           action={
             <>
-            <Button color="inherit" size="small" onClick={closeSettings}>
-              Yes
-            </Button>
-            <Button color="inherit" size="small" onClick={closeSettings}>
-              No
-            </Button>
+              <Button color="inherit" size="small" onClick={closeSettings}>
+                Yes
+              </Button>
+              <Button color="inherit" size="small" onClick={closeSettings}>
+                No
+              </Button>
             </>
           }
         >

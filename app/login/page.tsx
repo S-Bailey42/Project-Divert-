@@ -23,6 +23,8 @@ import { useState } from "react";
 import Image from "next/image";
 import Alert from "@mui/material/Alert";
 import companyImage from "/app/public/project divert logo.png";
+import { VisibilityOff, Visibility } from "@mui/icons-material";
+import { InputLabel, OutlinedInput, InputAdornment, IconButton } from "@mui/material";
 
 function Copyright(props: any) {
   return (
@@ -49,33 +51,63 @@ function isEmail(email: string) {
   return emailRegex.test(email);
 }
 
+function validatePassword(password: string) {
+  const passwordRegex = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/);
+  return passwordRegex.test(password);
+}
+
 export default function SignUp() {
-  const [error, setError] = useState<any>(null);
+  const [errors, setErrors] = useState<any>(null);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get("email") as string;
     const password = data.get("password") as string;
+
     if (!isEmail(email)) {
-      setError(
+      setErrors(
         <Alert
           key={uuidv4()}
           className="z-10"
           severity="error"
           onClose={() => {
-            setError(null);
+            setErrors(null);
           }}
         >
           Please enter a valid email
         </Alert>
       );
       return;
-    } else {
-      console.log({
-        email: email,
-        password: password,
-      });
     }
+
+    if (!validatePassword(password)) {
+      setErrors(
+        <Alert
+          key={uuidv4()}
+          className="z-10"
+          severity="error"
+          onClose={() => {
+            setErrors(null);
+          }}
+        >
+          Passwords must be have at least: <br />
+          - 8 characters <br />
+          - 1 uppercase & 1 lowercase character <br />- 1 number
+        </Alert>
+      );
+      return;
+    }
+
+  };
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
   };
 
   return (
@@ -108,17 +140,37 @@ export default function SignUp() {
                 autoComplete="email"
               />
             </Grid>
+
             <Grid item xs={12}>
-              <TextField
+              <FormControl
+                variant="outlined"
                 required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="new-password"
-              />
+              >
+                <InputLabel htmlFor="outlined-adornment-password">
+                  Password
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-password"
+                  fullWidth
+                  type={showPassword ? "text" : "password"}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                  name="password"
+                />
+              </FormControl>
             </Grid>
+
             <Grid>
               <Grid item xs={12}>
                 <FormGroup>
@@ -130,14 +182,16 @@ export default function SignUp() {
                 </FormGroup>
               </Grid>
             </Grid>
+
           </Grid>
-          {error}
+          {errors}
           <Button
             className="bg-[#0473ba] font-bold hover:bg-[#ae1182] " //hover doesn't work and I don't know why
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            href="http://localhost:3000/clientPage"
           >
             Sign In
           </Button>

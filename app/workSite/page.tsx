@@ -17,14 +17,33 @@ import {
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
+import companyImage from "/app/public/encore.png";
+import Image from "next/image";
 import chairImage from "/app/public/chair.png";
+import MenuIcon from "@mui/icons-material/Menu";
 import CardContent from "@mui/material/CardContent";
 import carpetImage from "/app/public/carpet.png";
-import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import AddIcon from '@mui/icons-material/Add';
 import { mdiAccount, mdiMapMarker, mdiPhone } from "@mdi/js";
 import values from "../../values.json";
+import { useState } from "react";
+
+const encoreBlue = '#3382c4';
+const encoreRed = '#f04e43';
+const encorePurple = '#883995';
+const encoreGreen = '#93bf3e';
+const encoreGrey = '#444c52';
 
 function App() {
+  const [anchorNav, setAnchorNav] = useState<null | HTMLElement>(null);
+
+  const openMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorNav(event.currentTarget);
+  };
+  const closeMenu = () => {
+    setAnchorNav(null);
+  };
+
   const ItemArea = ({ itemView, items }: { itemView: string; items: any }) => {
     if (itemView == "list") {
       return (
@@ -42,16 +61,41 @@ function App() {
   };
   return (
     <>
-      <AppBar position="static" elevation={0} sx={{ bgcolor: "#85c433" }}>
-        <Toolbar sx={{ alignContent: "centers" }}>
-          <Typography variant="h6" component="div" flexGrow={1}>
-            Items on *Your site*
+      <AppBar position="static" elevation={0} sx={{ bgcolor: "#93bf3e" }}>
+        <Toolbar>
+
+          <Box>
+            <a href="http://localhost:3000/clientPage">
+              <Image alt="Encore" src={companyImage} width={110} />
+            </a>
+          </Box>
+
+          <Typography variant="h6" component="div" flexGrow={1} align="center">
+            *Your site*
           </Typography>
-          <IconButton color="inherit" size="large">
-            <AddAPhotoIcon />
-          </IconButton>
+
+          <Box>
+            <IconButton size="large" edge="start" onClick={openMenu}>
+              <MenuIcon></MenuIcon>
+            </IconButton>
+            <Menu
+              open={Boolean(anchorNav)}
+              onClose={closeMenu}
+            >
+              <MenuList>
+                <MenuItem>Help</MenuItem>
+                <a href="http://localhost:3000/login"><MenuItem>Logout</MenuItem></a>
+              </MenuList>
+            </Menu>
+          </Box>
+
         </Toolbar>
       </AppBar>
+
+      <Button sx={{ color: "#6e6e6e" }} href="http://localhost:3000/addAnItem">
+        Add Item
+      </Button>
+
       <div className="box m-4">
         {values.items.map((value, index) => (
           <GridItem key={index} data={value} index={index} />
@@ -60,6 +104,8 @@ function App() {
     </>
   );
 }
+
+
 
 const GridItem = ({ index, data }: { index: number; data: any }) => (
   <Card>
