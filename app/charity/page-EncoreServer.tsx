@@ -14,7 +14,7 @@ import { SideDrawer } from '@/components/components';
 import { useState } from 'react';
 import values from "../../values.json"
 import SwipeableViews from 'react-swipeable-views';
-
+//display images that are close in proximity to the charity
 const images = [
   {
     label: 'San Francisco – Oakland Bay Bridge, United States',
