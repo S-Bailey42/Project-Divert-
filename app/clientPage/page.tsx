@@ -18,15 +18,16 @@ import Image from "next/image";
 import companyImage from "/app/public/encore.png";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
+import withAuth from "@/components/withAuth";
 
-const encoreBlue = '#3382c4';
-const encoreRed = '#f04e43';
-const encorePurple = '#883995';
-const encoreGreen = '#93bf3e';
-const encoreGrey = '#444c52';
+const encoreBlue = "#3382c4";
+const encoreRed = "#f04e43";
+const encorePurple = "#883995";
+const encoreGreen = "#93bf3e";
+const encoreGrey = "#444c52";
 
-function App() {
+function ClientApp() {
   const [anchorNav, setAnchorNav] = useState<null | HTMLElement>(null);
 
   const openMenu = (event: MouseEvent<HTMLElement>) => {
@@ -44,7 +45,6 @@ function App() {
   const closeSettings = () => {
     setSettingsNav(null);
   };
-
 
   return (
     <Box>
@@ -64,18 +64,18 @@ function App() {
             <IconButton size="large" edge="start" onClick={openMenu}>
               <MenuIcon></MenuIcon>
             </IconButton>
-            <Menu
-              open={Boolean(anchorNav)}
-              onClose={closeMenu}
-            >
+            <Menu open={Boolean(anchorNav)} onClose={closeMenu}>
               <MenuList>
-              <a href="http://localhost:3000/siteHistory"><MenuItem>View Site History</MenuItem></a>
+                <a href="http://localhost:3000/siteHistory">
+                  <MenuItem>View Site History</MenuItem>
+                </a>
                 <MenuItem>Help</MenuItem>
-                <a href="http://localhost:3000/login"><MenuItem>Logout</MenuItem></a>
+                <a href="http://localhost:3000/login">
+                  <MenuItem>Logout</MenuItem>
+                </a>
               </MenuList>
             </Menu>
           </Box>
-
         </Toolbar>
       </AppBar>
 
@@ -97,7 +97,9 @@ function App() {
         </Alert>
       </Menu>
 
-      <Button sx={{ color: "#6e6e6e" }} href="http://localhost:3000/createSite">Add new site</Button>
+      <Button sx={{ color: "#6e6e6e" }} href="http://localhost:3000/createSite">
+        Add new site
+      </Button>
 
       <Card>
         <CardHeader
@@ -106,7 +108,13 @@ function App() {
               <DeleteIcon />
             </IconButton>
           }
-          title=<Button sx={{ color: encoreGrey, fontSize: 20 }} href={`http://localhost:3000/workSite`}> Brandon Road </Button>
+          title=<Button
+            sx={{ color: encoreGrey, fontSize: 20 }}
+            href={`http://localhost:3000/workSite`}
+          >
+            {" "}
+            Brandon Road{" "}
+          </Button>
           subheader="N7 9AA"
         />
       </Card>
@@ -118,7 +126,12 @@ function App() {
               <DeleteIcon />
             </IconButton>
           }
-          title=<Button sx={{ color: encoreGrey, fontSize: 20 }} href={`http://localhost:3000/workSite`}>Prince William School </Button>
+          title=<Button
+            sx={{ color: encoreGrey, fontSize: 20 }}
+            href={`http://localhost:3000/workSite`}
+          >
+            Prince William School{" "}
+          </Button>
           subheader="PE8 4BS"
         />
       </Card>
@@ -130,7 +143,12 @@ function App() {
               <DeleteIcon />
             </IconButton>
           }
-          title=<Button sx={{ color: encoreGrey, fontSize: 20 }} href={`http://localhost:3000/workSite`}>MKUH Radiotherapy </Button>
+          title=<Button
+            sx={{ color: encoreGrey, fontSize: 20 }}
+            href={`http://localhost:3000/workSite`}
+          >
+            MKUH Radiotherapy{" "}
+          </Button>
           subheader="MK6 5LD"
         />
       </Card>
@@ -142,7 +160,12 @@ function App() {
               <DeleteIcon />
             </IconButton>
           }
-          title=<Button sx={{ color: encoreGrey, fontSize: 20 }} href={`http://localhost:3000/workSite`}>Little Reddings Primary School </Button>
+          title=<Button
+            sx={{ color: encoreGrey, fontSize: 20 }}
+            href={`http://localhost:3000/workSite`}
+          >
+            Little Reddings Primary School{" "}
+          </Button>
           subheader="WD23 3PR"
         />
       </Card>
@@ -154,7 +177,13 @@ function App() {
               <DeleteIcon />
             </IconButton>
           }
-          title=<Button sx={{ color: encoreGrey, fontSize: 20 }} href={`http://localhost:3000/workSite`}> Harwell Campus </Button>
+          title=<Button
+            sx={{ color: encoreGrey, fontSize: 20 }}
+            href={`http://localhost:3000/workSite`}
+          >
+            {" "}
+            Harwell Campus{" "}
+          </Button>
           subheader="OX"
         />
       </Card>
@@ -166,7 +195,13 @@ function App() {
               <DeleteIcon />
             </IconButton>
           }
-          title=<Button sx={{ color: encoreGrey, fontSize: 20 }} href={`http://localhost:3000/workSite`}> Purchase Street </Button>
+          title=<Button
+            sx={{ color: encoreGrey, fontSize: 20 }}
+            href={`http://localhost:3000/workSite`}
+          >
+            {" "}
+            Purchase Street{" "}
+          </Button>
           subheader="NW1 1HW"
         />
       </Card>
@@ -178,7 +213,13 @@ function App() {
               <DeleteIcon />
             </IconButton>
           }
-          title=<Button sx={{ color: encoreGrey, fontSize: 20 }} href={`http://localhost:3000/workSite`}> 29 Marylebone Road </Button>
+          title=<Button
+            sx={{ color: encoreGrey, fontSize: 20 }}
+            href={`http://localhost:3000/workSite`}
+          >
+            {" "}
+            29 Marylebone Road{" "}
+          </Button>
           subheader="N7 9AA"
         />
       </Card>
@@ -190,7 +231,12 @@ function App() {
               <DeleteIcon />
             </IconButton>
           }
-          title=<Button sx={{ color: encoreGrey, fontSize: 20 }} href={`http://localhost:3000/workSite`}>Crawley Innovation Centre </Button>
+          title=<Button
+            sx={{ color: encoreGrey, fontSize: 20 }}
+            href={`http://localhost:3000/workSite`}
+          >
+            Crawley Innovation Centre{" "}
+          </Button>
           subheader="RH10 9QL"
         />
       </Card>
@@ -198,4 +244,4 @@ function App() {
   );
 }
 
-export default App;
+export default withAuth(ClientApp, [1, 3]);

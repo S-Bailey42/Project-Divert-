@@ -1,30 +1,29 @@
 "use client";
 
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { v4 as uuidv4 } from "uuid";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
 import Image from "next/image";
 import Alert from "@mui/material/Alert";
 import companyImage from "/app/public/project divert logo.png";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
-import { InputLabel, OutlinedInput, InputAdornment, IconButton } from "@mui/material";
+import {
+  InputLabel,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
+import { saveToken } from "../utils/token";
+import { useRouter } from "next/navigation";
 
 function Copyright(props: any) {
   return (
@@ -44,60 +43,58 @@ function Copyright(props: any) {
   );
 }
 
-function isEmail(email: string) {
-  const emailRegex = new RegExp(
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  );
-  return emailRegex.test(email);
-}
-
-function validatePassword(password: string) {
-  const passwordRegex = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/);
-  return passwordRegex.test(password);
-}
-
 export default function SignUp() {
   const [errors, setErrors] = useState<any>(null);
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const router = useRouter();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const email = data.get("email") as string;
+    const username = data.get("username") as string;
     const password = data.get("password") as string;
 
-    if (!isEmail(email)) {
-      setErrors(
-        <Alert
-          key={uuidv4()}
-          className="z-10"
-          severity="error"
-          onClose={() => {
-            setErrors(null);
-          }}
-        >
-          Please enter a valid email
-        </Alert>
-      );
-      return;
+    const response = await fetch(`http://127.0.0.1:8000/auth/login`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+    });
+
+    switch (response.status) {
+      case 200:
+        const token = JSON.stringify(await response.json());
+        saveToken(token);
+        const userTypeValidator = JSON.parse(token);
+        if (userTypeValidator["user_type_id"] == 3) {
+          router.push("/clientPage");
+        }
+        if (userTypeValidator["user_type_id"] == 2) {
+          router.push("/charity");
+        }
+
+        break;
+
+      case 404:
+        setErrors(
+          <Alert
+            key={uuidv4()}
+            className="z-10"
+            severity="error"
+            onClose={() => {
+              setErrors(null);
+            }}
+          >
+            We do not recognise this Email Address or Password
+          </Alert>
+        );
+        break;
     }
 
-    if (!validatePassword(password)) {
-      setErrors(
-        <Alert
-          key={uuidv4()}
-          className="z-10"
-          severity="error"
-          onClose={() => {
-            setErrors(null);
-          }}
-        >
-          Passwords must be have at least: <br />
-          - 8 characters <br />
-          - 1 uppercase & 1 lowercase character <br />- 1 number
-        </Alert>
-      );
-      return;
-    }
-
+    console.log(response);
   };
 
   const [showPassword, setShowPassword] = React.useState(false);
@@ -134,18 +131,15 @@ export default function SignUp() {
               <TextField
                 required
                 fullWidth
-                id="email"
+                id="username"
                 label="Email Address"
-                name="email"
+                name="username"
                 autoComplete="email"
               />
             </Grid>
 
             <Grid item xs={12}>
-              <FormControl
-                variant="outlined"
-                required
-              >
+              <FormControl variant="outlined" required>
                 <InputLabel htmlFor="outlined-adornment-password">
                   Password
                 </InputLabel>
@@ -170,19 +164,6 @@ export default function SignUp() {
                 />
               </FormControl>
             </Grid>
-
-            <Grid>
-              <Grid item xs={12}>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox />}
-                    label="Remember me"
-                    name="rememberMe"
-                  />
-                </FormGroup>
-              </Grid>
-            </Grid>
-
           </Grid>
           {errors}
           <Button
@@ -191,7 +172,6 @@ export default function SignUp() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            href="http://localhost:3000/clientPage"
           >
             Sign In
           </Button>
