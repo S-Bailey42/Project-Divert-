@@ -8,12 +8,12 @@ import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 import Icon from "@mdi/react";
 import { mdiAccount, mdiChevronDown, mdiChevronUp, mdiEmail, mdiMagnify, mdiMapMarker, mdiMenu, mdiPhone, mdiTune } from '@mdi/js';
-
 import { Modal, AppBar, Box, Divider, Drawer, IconButton, InputBase, Pagination, Paper, Slider, Stack, TextField, Toolbar, MobileStepper } from '@mui/material';
 import { SideDrawer } from '@/components/components';
 import { useEffect, useState } from 'react';
 import values from "../../values.json"
 import SwipeableViews from 'react-swipeable-views';
+import withAuth from '@/components/withAuth';
 
 const images = [
   {
@@ -137,7 +137,7 @@ const ItemArea = ({ itemView, items }: { itemView: string, items: any }) => {
   }
 }
 
-export default function Home() {
+function Home() {
 
   const list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,]//, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
@@ -372,3 +372,5 @@ const GridItem = ({ index, data }: { index: number, data: any }) => (
     </CardActions>
   </Card>
 )
+
+export default withAuth(Home, [2, 3])

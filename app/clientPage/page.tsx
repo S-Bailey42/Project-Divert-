@@ -20,6 +20,8 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import DeleteIcon from "@mui/icons-material/Delete";
 import withAuth from "@/components/withAuth";
+import { deleteToken } from "../utils/token";
+import { useRouter } from "next/navigation";
 
 const encoreBlue = "#3382c4";
 const encoreRed = "#f04e43";
@@ -29,6 +31,13 @@ const encoreGrey = "#444c52";
 
 function ClientApp() {
   const [anchorNav, setAnchorNav] = useState<null | HTMLElement>(null);
+  const router = useRouter();
+
+  const handleLogout = (event: any) => {
+    event.preventDefault();
+    router.push("/login");
+    deleteToken();
+  }
 
   const openMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorNav(event.currentTarget);
@@ -70,7 +79,7 @@ function ClientApp() {
                   <MenuItem>View Site History</MenuItem>
                 </a>
                 <MenuItem>Help</MenuItem>
-                <a href="http://localhost:3000/login">
+                <a onClick={handleLogout}>
                   <MenuItem>Logout</MenuItem>
                 </a>
               </MenuList>

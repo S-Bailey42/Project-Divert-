@@ -1,30 +1,21 @@
 "use client";
 
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-
 import Image from "next/image";
-import companyImage from "/app/public/encore environment logo.png";
+import companyImage from "/app/public/encore.png";
+import pdImage from "/app/public/project divert logo.png";
+import { useRouter } from "next/navigation";
 
 export default function SignUp() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+
+  const router = useRouter();
+
+  const handleHomePage = (event: any) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    router.push("/home")
   };
 
   return (
@@ -36,29 +27,25 @@ export default function SignUp() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          paddingTop: 25,
         }}
       >
-        <div className=" w-110 h-110">
+        <div className=" w-52 pb-10">
           <Image alt="pd" src={companyImage} />
         </div>
 
-        <p className=" pt-20 text-5xl">Thank You!</p>
+        <div className=" w-20">
+          <Image alt="pd" src={pdImage} />
+        </div>
 
-        <p className=" pt-20 text-2xl text-center pb-20">
+        <p className=" pt-10 text-5xl">Thank You!</p>
+
+        <p className=" pt-10 text-2xl text-center pb-20">
           We will be in contact with you soon regarding your application.
         </p>
 
-        <a className="underline" href="/login">
+        <button className="underline" onClick={handleHomePage} >
           Home
-        </a>
-
-        <Box
-          component="form"
-          noValidate
-          onSubmit={handleSubmit}
-          sx={{ mt: 3 }}
-        ></Box>
+        </button>
       </Box>
     </Container>
   );

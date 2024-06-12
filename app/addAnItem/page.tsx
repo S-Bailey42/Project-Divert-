@@ -1,37 +1,30 @@
 "use client";
 
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem, { menuItemClasses } from "@mui/material/MenuItem";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import Checkbox from "@mui/material/Checkbox";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import InputAdornment from "@mui/material/InputAdornment";
 import Link from "@mui/material/Link";
 import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
 import MenuIcon from "@mui/icons-material/Menu";
 import Grid from "@mui/material/Grid";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { v4 as uuidv4 } from "uuid";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
 import Image from "next/image";
 import companyImage from "/app/public/encore.png";
 import pdImage from "/app/public/project divert logo.png";
 import { AppBar, IconButton, Menu, MenuList, Toolbar } from "@mui/material";
+import withAuth from "@/components/withAuth";
+import { deleteToken } from "../utils/token";
+import { useRouter } from "next/navigation";
+
 
 const encoreBlue = '#3382c4';
 const encoreRed = '#f04e43';
@@ -62,15 +55,23 @@ function validateQuantity(quantity: string) {
   return companyNameRegex.test(quantity);
 }
 
-export default function AddItem() {
+function AddItem() {
   const [anchorNav, setAnchorNav] = useState<null | HTMLElement>(null);
 
-    const openMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorNav(event.currentTarget);
-    };
-    const closeMenu = () => {
-        setAnchorNav(null);
-    };
+  const router = useRouter();
+
+  const handleLogout = (event: any) => {
+    event.preventDefault();
+    router.push("/login");
+    deleteToken();
+  }
+
+  const openMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorNav(event.currentTarget);
+  };
+  const closeMenu = () => {
+    setAnchorNav(null);
+  };
 
   const [errors, setErrors] = useState<any>(null);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -161,9 +162,9 @@ export default function AddItem() {
               onClose={closeMenu}
             >
               <MenuList>
-              <a href="http://localhost:3000/siteHistory"><MenuItem>View Site History</MenuItem></a>
+                <a href="http://localhost:3000/siteHistory"><MenuItem>View Site History</MenuItem></a>
                 <MenuItem>Help</MenuItem>
-                <a href="http://localhost:3000/login"><MenuItem>Logout</MenuItem></a>
+                <a onClick={handleLogout}><MenuItem>Logout</MenuItem></a>
               </MenuList>
             </Menu>
           </Box>
@@ -283,3 +284,5 @@ export default function AddItem() {
     </>
   );
 }
+
+export default withAuth(AddItem, [1, 3]);

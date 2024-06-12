@@ -15,18 +15,17 @@ import {
   Icon,
 } from "@mui/material";
 import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import companyImage from "/app/public/encore.png";
 import Image from "next/image";
-import chairImage from "/app/public/chair.png";
 import MenuIcon from "@mui/icons-material/Menu";
 import CardContent from "@mui/material/CardContent";
-import carpetImage from "/app/public/carpet.png";
-import AddIcon from '@mui/icons-material/Add';
 import { mdiAccount, mdiMapMarker, mdiPhone } from "@mdi/js";
 import values from "../../values.json";
 import { useState } from "react";
+import withAuth from "@/components/withAuth";
+import { deleteToken } from "../utils/token";
+import { useRouter } from "next/navigation";
 
 const encoreBlue = '#3382c4';
 const encoreRed = '#f04e43';
@@ -34,8 +33,16 @@ const encorePurple = '#883995';
 const encoreGreen = '#93bf3e';
 const encoreGrey = '#444c52';
 
-function App() {
+function viewSite() {
   const [anchorNav, setAnchorNav] = useState<null | HTMLElement>(null);
+
+  const router = useRouter();
+
+  const handleLogout = (event: any) => {
+    event.preventDefault();
+    router.push("/login");
+    deleteToken();
+  }
 
   const openMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorNav(event.currentTarget);
@@ -85,7 +92,7 @@ function App() {
               <MenuList>
               <a href="http://localhost:3000/siteHistory"><MenuItem>View Site History</MenuItem></a>
                 <MenuItem>Help</MenuItem>
-                <a href="http://localhost:3000/login"><MenuItem>Logout</MenuItem></a>
+                <a onClick={handleLogout}><MenuItem>Logout</MenuItem></a>
               </MenuList>
             </Menu>
           </Box>
@@ -150,4 +157,4 @@ const GridItem = ({ index, data }: { index: number; data: any }) => (
   </Card>
 );
 
-export default App;
+export default withAuth(viewSite, [1, 3]);

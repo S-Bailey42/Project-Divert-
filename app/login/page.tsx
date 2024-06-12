@@ -69,11 +69,14 @@ export default function SignUp() {
         const token = JSON.stringify(await response.json());
         saveToken(token);
         const userTypeValidator = JSON.parse(token);
-        if (userTypeValidator["user_type_id"] == 3) {
+        if (userTypeValidator["user_type_id"] == 1) {
           router.push("/clientPage");
         }
         if (userTypeValidator["user_type_id"] == 2) {
           router.push("/charity");
+        }
+        if (userTypeValidator["user_type_id"] == 3) {
+          router.push("/adminPanel");
         }
 
         break;

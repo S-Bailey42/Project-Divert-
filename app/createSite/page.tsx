@@ -13,7 +13,6 @@ import {
     CssBaseline,
     Alert,
 } from "@mui/material";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import MenuIcon from "@mui/icons-material/Menu";
 import companyImage from "/app/public/encore.png";
 import Image from "next/image";
@@ -26,6 +25,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
+import withAuth from "@/components/withAuth";
+import { deleteToken } from "../utils/token";
+import { useRouter } from "next/navigation";
 
 const encoreBlue = '#3382c4';
 const encoreRed = '#f04e43';
@@ -61,7 +63,14 @@ function validatePhoneNumber(phone: string) {
     return companyNameRegex.test(phone);
 }
 
-export default function App() {
+function createSite() {
+    const router = useRouter();
+
+    const handleLogout = (event: any) => {
+        event.preventDefault();
+        router.push("/login");
+        deleteToken();
+    }
 
     const [anchorNav, setAnchorNav] = useState<null | HTMLElement>(null);
 
@@ -192,9 +201,9 @@ export default function App() {
                             onClose={closeMenu}
                         >
                             <MenuList>
-                            <a href="http://localhost:3000/siteHistory"><MenuItem>View Site History</MenuItem></a>
+                                <a href="http://localhost:3000/siteHistory"><MenuItem>View Site History</MenuItem></a>
                                 <MenuItem>Help</MenuItem>
-                                <a href="http://localhost:3000/login"><MenuItem>Logout</MenuItem></a>
+                                <a onClick={handleLogout}><MenuItem>Logout</MenuItem></a>
                             </MenuList>
                         </Menu>
                     </Box>
@@ -284,7 +293,7 @@ export default function App() {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3 }}
-                    href="http://localhost:3000/clientPage"
+                        href="http://localhost:3000/clientPage"
                     >
                         Add Site to Dashboard
                     </Button>
@@ -297,3 +306,5 @@ export default function App() {
     )
 
 }
+
+export default withAuth(createSite, [1, 3]);

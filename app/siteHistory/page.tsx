@@ -18,6 +18,9 @@ import Image from "next/image";
 import companyImage from "/app/public/encore.png";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
+import withAuth from "@/components/withAuth";
+import { deleteToken } from "../utils/token";
+import { useRouter } from "next/navigation";
 
 const encoreBlue = '#3382c4';
 const encoreRed = '#f04e43';
@@ -25,8 +28,16 @@ const encorePurple = '#883995';
 const encoreGreen = '#93bf3e';
 const encoreGrey = '#444c52';
 
-function App() {
+function siteHistory() {
   const [anchorNav, setAnchorNav] = useState<null | HTMLElement>(null);
+
+  const router = useRouter();
+
+  const handleLogout = (event: any) => {
+    event.preventDefault();
+    router.push("/login");
+    deleteToken();
+  }
 
   const openMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorNav(event.currentTarget);
@@ -69,7 +80,7 @@ function App() {
             >
               <MenuList>
                 <MenuItem>Help</MenuItem>
-                <a href="http://localhost:3000/login"><MenuItem>Logout</MenuItem></a>
+                <a onClick={handleLogout}><MenuItem>Logout</MenuItem></a>
               </MenuList>
             </Menu>
           </Box>
@@ -97,32 +108,32 @@ function App() {
 
       <Card>
         <CardHeader
-          title=<Button sx={{ color: "black", fontSize: 20 }} 
-          href={`http://localhost:3000/workSite`}> Norfolk Road Industrial Estate </Button>
+          title=<Button sx={{ color: "black", fontSize: 20 }}
+            href={`http://localhost:3000/workSite`}> Norfolk Road Industrial Estate </Button>
           subheader="N7 9AA"
         />
       </Card>
 
       <Card>
         <CardHeader
-          title=<Button sx={{ color: "black", fontSize: 20 }} 
-          href={`http://localhost:3000/workSite`}>St Peters Church </Button>
+          title=<Button sx={{ color: "black", fontSize: 20 }}
+            href={`http://localhost:3000/workSite`}>St Peters Church </Button>
           subheader="PE8 4BS"
         />
       </Card>
 
       <Card sx={{}}>
         <CardHeader
-          title=<Button sx={{ color: "black", fontSize: 20 }} 
-          href={`http://localhost:3000/workSite`}>80 New Bond Street </Button>
+          title=<Button sx={{ color: "black", fontSize: 20 }}
+            href={`http://localhost:3000/workSite`}>80 New Bond Street </Button>
           subheader="MK6 5LD"
         />
       </Card>
 
       <Card>
         <CardHeader
-          title=<Button sx={{ color: "black", fontSize: 20 }} 
-          href={`http://localhost:3000/workSite`}>Avebury House </Button>
+          title=<Button sx={{ color: "black", fontSize: 20 }}
+            href={`http://localhost:3000/workSite`}>Avebury House </Button>
           subheader="WD23 3PR"
         />
       </Card>
@@ -131,4 +142,4 @@ function App() {
   );
 }
 
-export default App;
+export default withAuth(siteHistory, [1, 3]);
