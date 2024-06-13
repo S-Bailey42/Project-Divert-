@@ -5,19 +5,12 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import BottomNavigation from "@mui/material/BottomNavigation";
-import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import RestoreIcon from "@mui/icons-material/Restore";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import FolderIcon from "@mui/icons-material/Folder";
 import { SideDrawer } from "@/components/components";
-import { useState } from "react";
-import { FitScreen } from "@mui/icons-material";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { fetchAccountRequests } from "../utils/api";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "User ID", width: 200 },
@@ -37,123 +30,83 @@ const columns: GridColDef[] = [
 ];
 
 const Page = () => {
-  const [rows, setRows] = useState([
-    {
-      id: 1,
-      email: "deyor96485@haislot.com",
-      companyName: "Morgan Sindall",
-      accountType: 2,
-      postCode: "NN6 8HJ",
-    },
-    {
-      id: 2,
-      email: "gaiaferran@pastipass.com",
-      companyName: "Accomodation Concern",
-      accountType: 1,
-      postCode: "OX5 2FG",
-    },
-    {
-      id: 3,
-      email: "opera315@alimoh.cloud",
-      companyName: "Return MK",
-      accountType: 1,
-      postCode: "SH15 8JJ",
-    },
-    {
-      id: 4,
-      email: "cremnyov@rutory.com",
-      companyName: "The Wipers Foundation",
-      accountType: 1,
-      postCode: "G6 7HU",
-    },
-    {
-      id: 5,
-      email: "mcmick@btcmod.com",
-      companyName: "Spencer Contact",
-      accountType: 1,
-      postCode: "MK8 EDU",
-    },
-    {
-      id: 6,
-      email: "tkkolian3@loranerobinson.info",
-      companyName: "Overbury",
-      accountType: 2,
-      postCode: "LL60 UNZ",
-    },
-    {
-      id: 7,
-      email: "elhechicero@naverly.com",
-      companyName: "Modus",
-      accountType: 2,
-      postCode: "BG02 MWM",
-    },
-    {
-      id: 8,
-      email: "dakelenafranc@cjutro.de",
-      companyName: "Graeae",
-      accountType: 1,
-      postCode: "KM05 AUL",
-    },
-    {
-      id: 9,
-      email: "pr1geetoe20@lushily.top",
-      companyName: "Emmaus",
-      accountType: 1,
-      postCode: "HY59 MXB",
-    },
-    {
-      id: 10,
-      email: "bexrider@chantellegribbon.com",
-      companyName: "Cast Interiors",
-      accountType: 2,
-      postCode: "KA54 PKR",
-    },
-    {
-      id: 11,
-      email: "madugala@clonevnmail.com",
-      companyName: "The Daylight Centre",
-      accountType: 1,
-      postCode: "PF04 LZE",
-    },
-    {
-      id: 12,
-      email: "lilyjoe@audrianaputri.com",
-      companyName: "Todd",
-      accountType: 1,
-      postCode: "TW4 T00",
-    },
-  ]);
 
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
   const [selectedRows, setSelectedRows] = useState<Array<number>>([]);
+
+  useEffect(() => {
+    const loadAccountRequests = async () => {
+      try {
+        const data = await fetchAccountRequests();
+        setRows(data);
+      } catch (err) {
+        setError(err as Error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadAccountRequests();
+  }, [])
+
+
 
   function handleClick() {
     setRows(rows.filter((value) => !selectedRows.includes(value.id)));
   }
 
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>Error loading account requests: {error.message}</p>
+
   return (
     <div id="parent">
-      <Box sx={{ flexGrow: 1}}>
-        <AppBar position="static" sx={{bgcolor: "#85c433"}}>
-          <Toolbar>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static" sx={{ bgcolor: "#85c433" }}>
+          <Toolbar sx={{ flexWrap: 'wrap' }}>
             <SideDrawer />
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{
+                flexGrow: 1,
+                textAlign: { xs: 'center', sm: 'left' },
+                order: { xs: 2, sm: 1 }
+              }}
+            >
               Accounts Requesting Access
             </Typography>
-            <Button
-              variant="contained"
-              color="success"
-              className=" absolute right-10"
-              onClick={handleClick}
+            <Box
+              sx={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                order: { xs: 1, sm: 2 },
+                width: { xs: '100%', sm: 'auto' },
+                mb: { xs: 1, sm: 0 }
+              }}
             >
-              Accept
-            </Button>
-            <Button variant="contained" color="error" onClick={handleClick}>
-              Reject
-            </Button>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={handleClick}
+                sx={{ m: 1 }}
+              >
+                Accept
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={handleClick}
+                sx={{ m: 1 }}
+              >
+                Reject
+              </Button>
+            </Box>
           </Toolbar>
         </AppBar>
       </Box>
-      <Box sx={{ height: "100%", width: "100%"}}>
+      <Box sx={{ height: "100%", width: "100%" }}>
         <DataGrid
           style={{
             border: "solid",
@@ -163,7 +116,7 @@ const Page = () => {
           sx={{ flex: 1 }}
           rows={rows}
           columns={columns}
-          autoHeight={true}
+          autoHeight
           initialState={{
             pagination: {
               paginationModel: { page: 0, pageSize: 9 },
@@ -171,7 +124,7 @@ const Page = () => {
           }}
           pageSizeOptions={[9, 20]}
           checkboxSelection
-          onRowSelectionModelChange={(e) => setSelectedRows(e)}
+          onRowSelectionModelChange={(newSelection) => setSelectedRows(newSelection)}
         />
       </Box>
     </div>
