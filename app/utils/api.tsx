@@ -1,23 +1,34 @@
 import axios from "axios";
 import { getToken } from "./token";
 
-const API_URL = 'http://127.0.0.1:8000/request'
-
-const axiosInstnace = axios.create({
-    baseURL: API_URL,
-    headers: {
-        'Authorization': `Bearer ${getToken()}`
-    }
-})
+const API_URL = 'http://127.0.0.1:8000/request/view'
 
 export const fetchAccountRequests = async () => {
-    try {
-        const response = await axiosInstnace.get(`${API_URL}/view`)
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching account requests:', error);
-        throw error;
+    const token = localStorage.getItem("authToken")
+    if (!token) {
+        //console.error("No auth token found");
+        throw new Error("No auth token found");
     }
+
+    const response: any = await fetch(`http://127.0.0.1:8000/request/view`, {
+        method: "GET",
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+    });
+
+    //console.log(token)
+    //console.log(response)
+
+
+    if (!response.ok) {
+        //console.error(`HTTP error! status: ${response.status}`);
+        throw new Error(`Error fetching account requests:, ${ response.status }`);
+    }
+
+    return response.json();
 }
 
 //ignore all code below for now, it is unused
