@@ -149,7 +149,7 @@ export default function Home() {
 
           <p className="text-black mb-4">Are you part of a good cause that is in need? 
             If you work for a charity, community group, educational facility, or any other organisation that you believe strives to bring value to their community,
-            then <a href="/requestaccess" className=" underline text-blue-800">request your access</a> and become part of Project Divert.</p>
+            then <a href="/requestaccount" className=" underline text-blue-800">request your access</a> and become part of Project Divert.</p>
 
         </div>
 

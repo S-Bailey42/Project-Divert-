@@ -22,6 +22,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import withAuth from "@/components/withAuth";
 import { deleteToken } from "../utils/token";
 import { useRouter } from "next/navigation";
+//import { useSiteContext } from "../utils/siteContext";
+//import { SiteProvider } from "../utils/siteContext";
 
 const encoreBlue = "#3382c4";
 const encoreRed = "#f04e43";
@@ -31,6 +33,8 @@ const encoreGrey = "#444c52";
 
 function ClientApp() {
   const [anchorNav, setAnchorNav] = useState<null | HTMLElement>(null);
+  //const {sites} = useSiteContext();
+
   const router = useRouter();
 
   const handleLogout = (event: any) => {
@@ -56,7 +60,8 @@ function ClientApp() {
   };
 
   return (
-    <Box>
+    
+      <Box>
       <AppBar position="static" elevation={0} sx={{ bgcolor: "#93bf3e" }}>
         <Toolbar>
           <Box>
@@ -249,8 +254,11 @@ function ClientApp() {
           subheader="RH10 9QL"
         />
       </Card>
-    </Box>
+      </Box>
+   
   );
 }
+
+
 
 export default withAuth(ClientApp, [1, 3]);
