@@ -14,6 +14,8 @@ import { useEffect, useState } from 'react';
 import values from "../../values.json"
 import SwipeableViews from 'react-swipeable-views';
 import withAuth from '@/components/withAuth';
+import { useSearchParams } from 'next/navigation';
+
 
 const images = [
   {
@@ -71,18 +73,7 @@ const images = [
 
 ];
 
-const TopBar = () => {
-  return (
-    <AppBar>
-      <Toolbar sx={{ width: "100%", maxWidth: 600, mx: "auto" }}>
-        <SideDrawer />
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
 
-        </Typography>
-      </Toolbar>
-    </AppBar>
-  )
-}
 
 const SearchMenuMobile = () => {
 
@@ -128,9 +119,9 @@ const SearchMenuMobile = () => {
 const ItemArea = ({ itemView, items }: { itemView: string, items: any }) => {
   if (itemView == "list") {
     return (
-      <div className="box m-4">
+      <div className="box m-4 flex ">
         {items.map((value: any, index: number) => (
-          <GridItem key={index} data={values.items[index % 6]} index={index} />
+          <GridItem key={index} data={value} index={index} />
         ))}
       </div>
     )
@@ -141,19 +132,51 @@ function Home() {
 
   const list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,]//, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-  const [items, setItems] = useState(list)
+  const [items, setItems] = useState([])
+
+  const searchParams = useSearchParams()
 
   useEffect(() => {
     async function getItems(count: number, pageNumber: number) {
-      let response = await fetch("http://127.0.0.1:8000/items")
-      const data = await response.json()
+      let token: string | null | object = localStorage.getItem("authToken");
+      if (!token) {
+        //console.error("No auth token found");
+        throw new Error("No auth token found");
+      }
+
+      let token_obj = JSON.parse(token);
+
+      if (!("access_token" in token_obj)) {
+        throw new Error("No auth token found");
+      }
+
+      const response: any = await fetch(`http://127.0.0.1:8000/items`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token_obj.access_token}`,
+          "Content-Type": "application/json",
+        },
+        //credentials: "include",
+      });
+
+      //console.log(token)
+      //console.log(response)
+
+      if (!response.ok) {
+        //console.error(`HTTP error! status: ${response.status}`);
+        throw new Error(`Error fetching account requests:, ${response.status}`);
+      }
+
+
 
       if (response.ok) {
-        setItems(data)
+        let data = await response.json()
+        console.log(data.items)
+        setItems(data.items)
       }
     }
 
-
+    getItems(12, 0)
   }, [])
 
   useEffect(() => {
@@ -165,57 +188,23 @@ function Home() {
   const [itemView, setItemView] = useState("list")
 
   return (
-    <>
-      <AppBar position="fixed">
+    <div className='h-[100px]  z-10'>
+      <AppBar position="fixed" color="transparent">
         <SearchMenuMobile />
       </AppBar>
-      <div className="pb-[52px]"/>
+      <div className="pb-[52px]" />
       <div className='h-[100vh] w-full flex-col flex'>
 
 
         <ItemArea itemView={itemView} items={items} />
 
-        <Pagination count={11} defaultPage={1} className="debug-border w-fit mt-auto mb-0 self-end mx-auto" />
+        <Pagination count={11} defaultPage={1} className=" w-fit mt-auto mb-0 self-end mx-auto" />
       </div>
-    </>
+    </div>
   )
 }
 
-const ListItem = ({ index, data }: { index: number, data: any }) => (
 
-  <Card sx={{ display: 'flex', width: "full" }}>
-    <CardMedia
-      component="img"
-      image={`/${index % 6 + 1}.jpg`}
-      sx={{ height: 250, width: 350 }}
-      title="skip"
-    />
-    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-      <CardContent className=" my-auto  w-fit">
-        <Typography sx={{ flex: "none" }} gutterBottom variant="h5"  >
-          {`(${data.quantity}) ${data.item}`}
-        </Typography>
-        <Typography variant="body1" color="text.secondary" className="flex flex-row gap-2">
-          <Icon path={mdiAccount} size={1.0} />
-          {data.company}
-        </Typography>
-        <Typography variant="body1" color="text.secondary" className="flex flex-row gap-2">
-          <Icon path={mdiMapMarker} size={1.0} />
-          {data.location}
-        </Typography>
-        <Typography variant="body1" color="text.secondary" className="flex flex-row gap-2">
-          <Icon path={mdiPhone} size={1.0} />
-          {data.phoneNumber}
-        </Typography>
-      </CardContent>
-    </Box>
-    <CardActions className=' grid ml-auto mr-0   gap-2'>
-      <Button variant="outlined" size="large">
-        More info
-      </Button>
-    </CardActions>
-  </Card>
-)
 
 const ItemInfo = ({ data }) => {
   const [activeStep, setActiveStep] = useState(0);
@@ -238,7 +227,7 @@ const ItemInfo = ({ data }) => {
     <Card sx={{ height: "90%", margin: "auto", maxWidth: "600px", marginTop: 5 }}>
       <CardContent sx={{ height: "100%" }} >
         <Typography gutterBottom variant="h3">
-          more info
+          {data.Name}
         </Typography>
         <Box
           sx={{
@@ -296,19 +285,7 @@ const ItemInfo = ({ data }) => {
           />
         </Box>
         <Typography gutterBottom variant="h5" component="div">
-          {`(${data.quantity}) ${data.item}`}
-        </Typography>
-        <Typography variant="body1" color="text.secondary" className="flex flex-row gap-2">
-          <Icon path={mdiAccount} size={1.0} />
-          {data.company}
-        </Typography>
-        <Typography variant="body1" color="text.secondary" className="flex flex-row gap-2">
-          <Icon path={mdiMapMarker} size={1.0} />
-          {data.location}
-        </Typography>
-        <Typography variant="body1" color="text.secondary" className="flex flex-row gap-2">
-          <Icon path={mdiPhone} size={1.0} />
-          {data.phoneNumber}
+          {JSON.stringify(data,null,2)}
         </Typography>
         <Button variant="contained">
           Request
@@ -352,19 +329,10 @@ const GridItem = ({ index, data }: { index: number, data: any }) => (
     />
     <CardContent>
       <Typography gutterBottom variant="h5" component="div">
-        {`(${data.quantity}) ${data.item}`}
+        {data.Name}
       </Typography>
-      <Typography variant="body1" color="text.secondary" className="flex flex-row gap-2">
-        <Icon path={mdiAccount} size={1.0} />
-        {data.company}
-      </Typography>
-      <Typography variant="body1" color="text.secondary" className="flex flex-row gap-2">
-        <Icon path={mdiMapMarker} size={1.0} />
-        {data.location}
-      </Typography>
-      <Typography variant="body1" color="text.secondary" className="flex flex-row gap-2">
-        <Icon path={mdiPhone} size={1.0} />
-        {data.phoneNumber}
+      <Typography  variant="body1" component="div">
+        {`Quantity: ${data.Quantity}`}
       </Typography>
     </CardContent>
     <CardActions>
