@@ -9,7 +9,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { SideDrawer } from "@/components/components";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { fetchAccountRequests } from "../utils/api";
 
 const columns: GridColDef[] = [
@@ -22,15 +21,9 @@ const columns: GridColDef[] = [
     type: "number",
     width: 100,
   },
-  {
-    field: "postCode",
-    headerName: "Post Code",
-    width: 100,
-  },
 ];
 
-const Page = () => {
-
+const AdminPanel = () => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -48,42 +41,40 @@ const Page = () => {
       }
     };
     loadAccountRequests();
-  }, [])
-
-
+  }, []);
 
   function handleClick() {
     setRows(rows.filter((value) => !selectedRows.includes(value.id)));
   }
 
-  if (loading) return <p>Loading...</p>
-  if (error) return <p>Error loading account requests: {error.message}</p>
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error loading account requests: {error.message}</p>;
 
   return (
     <div id="parent">
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" sx={{ bgcolor: "#85c433" }}>
-          <Toolbar sx={{ flexWrap: 'wrap' }}>
+          <Toolbar sx={{ flexWrap: "wrap" }}>
             <SideDrawer />
             <Typography
               variant="h6"
               component="div"
               sx={{
                 flexGrow: 1,
-                textAlign: { xs: 'center', sm: 'left' },
-                order: { xs: 2, sm: 1 }
+                textAlign: { xs: "center", sm: "left" },
+                order: { xs: 2, sm: 1 },
               }}
             >
               Accounts Requesting Access
             </Typography>
             <Box
               sx={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                justifyContent: 'center',
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
                 order: { xs: 1, sm: 2 },
-                width: { xs: '100%', sm: 'auto' },
-                mb: { xs: 1, sm: 0 }
+                width: { xs: "100%", sm: "auto" },
+                mb: { xs: 1, sm: 0 },
               }}
             >
               <Button
@@ -124,11 +115,13 @@ const Page = () => {
           }}
           pageSizeOptions={[9, 20]}
           checkboxSelection
-          onRowSelectionModelChange={(newSelection) => setSelectedRows(newSelection)}
+          onRowSelectionModelChange={(newSelection) =>
+            setSelectedRows(newSelection)
+          }
         />
       </Box>
     </div>
   );
 };
 
-export default Page;
+export default AdminPanel;
