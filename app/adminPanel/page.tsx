@@ -10,6 +10,9 @@ import Typography from "@mui/material/Typography";
 import { SideDrawer } from "@/components/components";
 import { useState, useEffect } from "react";
 import { fetchAccountRequests } from "../utils/api";
+import { acceptRequest } from "../utils/api";
+import { rejectRequest } from "../utils/api";
+import withAuth from "@/components/withAuth";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "User ID", width: 200 },
@@ -43,9 +46,28 @@ const AdminPanel = () => {
     loadAccountRequests();
   }, []);
 
-  function handleClick() {
-    setRows(rows.filter((value) => !selectedRows.includes(value.id)));
-  }
+  const handleAccept = async () => {
+    try {
+      await acceptRequest(selectedRows);
+      setRows(rows.filter((row) => !selectedRows.includes(row.id)));
+      setSelectedRows([]);
+      //fetch(`` {
+        //method: ""
+      //})
+    } catch (err) {
+      setError(err as Error);
+    }
+  };
+
+  const handleReject = async () => {
+    try {
+      await rejectRequest(selectedRows);
+      setRows(rows.filter((row) => !selectedRows.includes(row.id)));
+      setSelectedRows([]);
+    } catch (err) {
+      setError(err as Error);
+    }
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading account requests: {error.message}</p>;
@@ -80,7 +102,7 @@ const AdminPanel = () => {
               <Button
                 variant="contained"
                 color="success"
-                onClick={handleClick}
+                onClick={handleAccept}
                 sx={{ m: 1 }}
               >
                 Accept
@@ -88,7 +110,7 @@ const AdminPanel = () => {
               <Button
                 variant="contained"
                 color="error"
-                onClick={handleClick}
+                onClick={handleReject}
                 sx={{ m: 1 }}
               >
                 Reject
@@ -124,4 +146,4 @@ const AdminPanel = () => {
   );
 };
 
-export default AdminPanel;
+export default withAuth(AdminPanel, [3]);

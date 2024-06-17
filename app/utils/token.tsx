@@ -7,5 +7,5 @@ export const deleteToken: any = (token: any) => {
 }
 
 export const getToken: any = (token: any) => {
-  localStorage.getItem("authToken")
+  return localStorage.getItem("authToken")
 }

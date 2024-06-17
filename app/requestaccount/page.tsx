@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -55,26 +55,21 @@ function validateCompanyName(companyName: string) {
   return companyNameRegex.test(companyName);
 }
 
-function validatePassword(password: string) {
-  const passwordRegex = new RegExp(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/);
-  return passwordRegex.test(password);
-}
-
 export default function SignUp() {
-  const router= useRouter();
+  const router = useRouter();
   const [errors, setErrors] = useState<any>(null);
   const [userTypes, setUserType] = useState<Array<object>>([]);
   useEffect(() => {
     async function fetchMyAPI() {
-      let response = await fetch("http://127.0.0.1:8000/resource/userTypes")
-      const data = await response.json()
+      let response = await fetch("http://127.0.0.1:8000/resource/userTypes");
+      const data = await response.json();
       if (response.ok) {
-        setUserType(data)
+        setUserType(data);
       }
     }
 
-    fetchMyAPI()
-  },[])
+    fetchMyAPI();
+  }, []);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -128,24 +123,6 @@ export default function SignUp() {
           Please enter a phone number
         </Alert>
       );
-    }
-    
-    if (!validatePassword(password)) {
-      setErrors(
-        <Alert
-          key={uuidv4()}
-          className="z-10"
-          severity="error"
-          onClose={() => {
-            setErrors(null);
-          }}
-        >
-          Passwords must be have at least: <br />
-          - 8 characters <br />
-          - 1 uppercase & 1 lowercase character <br />- 1 number
-        </Alert>
-      );
-      return;
     }
 
     if (accountType == "") {
@@ -210,7 +187,6 @@ export default function SignUp() {
             </Alert>
           );
           break;
-
       }
 
       return;
@@ -287,35 +263,6 @@ export default function SignUp() {
               />
             </Grid>
 
-            <FormControl
-              sx={{ mt: 2, ml: 2, width: "max" }}
-              variant="outlined"
-              required
-            >
-              <InputLabel htmlFor="outlined-adornment-password">
-                Password
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-password"
-                fullWidth
-                type={showPassword ? "text" : "password"}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label="Password"
-                name="password"
-              />
-            </FormControl>
-
             <Grid item xs={12}>
               <FormControl fullWidth>
                 <InputLabel id="selectAccountInputLabel" required>
@@ -328,9 +275,11 @@ export default function SignUp() {
                   label="accountType"
                   onChange={handleChange}
                 >
-                  {userTypes.map(
-                    (type) => <MenuItem key={uuidv4()} value={type.id}>{type.Name}</MenuItem>
-                  )}
+                  {userTypes.map((type) => (
+                    <MenuItem key={uuidv4()} value={type.id}>
+                      {type.Name}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Grid>
