@@ -22,9 +22,8 @@ import companyImage from "/app/public/encore.png";
 import pdImage from "/app/public/project divert logo.png";
 import { AppBar, IconButton, Menu, MenuList, Toolbar } from "@mui/material";
 import withAuth from "@/components/withAuth";
-import { deleteToken } from "../utils/token";
+import { deleteToken, getToken } from "../utils/token";
 import { useRouter } from "next/navigation";
-
 
 const encoreBlue = '#3382c4';
 const encoreRed = '#f04e43';
@@ -73,8 +72,10 @@ function AddItem() {
     setAnchorNav(null);
   };
 
+  const [category, setCategory] = React.useState("");
+
   const [errors, setErrors] = useState<any>(null);
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const itemName = data.get("itemName") as string;
@@ -130,9 +131,63 @@ function AddItem() {
       return;
     }
 
-  };
+    const token = getToken();
+    if (!token) {
+      throw new Error("No auth token found")
+    }
 
-  const [category, setCategory] = React.useState("");
+    let token_obj: { access_token: string };
+    try {
+      token_obj = JSON.parse(token);
+    } catch (e) {
+      throw new Error("Invalid auth token format")
+    };
+
+    const newItem = {
+      Name: itemName,
+      SiteID: "0bd34c15-12ad-4593-8b5b-83661182e2b7",
+      ItemTypeID: 0,
+      Taken: false,
+      Quantity: quantity,
+      KgPerItem: weight,
+      Carbon: 0,
+      Dimensions: dimensions,
+    }
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/worksite/add/item", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token_obj.access_token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newItem),
+      });
+
+      console.log(newItem);
+
+      if (!response.ok) {
+        throw new Error(`Error adding item: ${response.statusText}`)
+      }
+
+      router.push("/workSite")
+
+    } catch (error: any) {
+      setErrors(
+        <Alert
+          key={uuidv4()}
+          className="z-10"
+          severity="error"
+          onClose={() => {
+            setErrors(null);
+          }}
+        >
+          {error.message}
+        </Alert>
+      );
+    }
+
+  };
 
   const handleChange = (event: SelectChangeEvent) => {
     setCategory(event.target.value as string);
@@ -270,7 +325,6 @@ function AddItem() {
               fullWidth
               variant="contained"
               sx={{ mt: 3 }}
-              href="http://localhost:3000/workSite"
             >
               Add Item
             </Button>

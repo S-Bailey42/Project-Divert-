@@ -199,15 +199,7 @@ export default function SignUp() {
     setAccountType(event.target.value as string);
   };
 
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
+  
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -233,7 +225,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="companyName"
-                label="Company Name"
+                label="Organisation Name"
                 name="companyName"
                 autoComplete="companyName"
               />

@@ -59,7 +59,7 @@ export default function Home() {
 
           <ul className="hidden sm:flex space-x-4">
             <li><a href="/login" className="text-stone-500 hover:underline">LOG IN</a></li>
-            <li><a href="#" className="text-stone-500 hover:underline">SIGN UP</a></li>
+            <li><a href="/requestaccount" className="text-stone-500 hover:underline">SIGN UP</a></li>
             <li><a href="https://www.encore-environment.com/" className="text-stone-500 hover:underline">MAIN SITE</a></li>
             <li><a href="#" className="text-stone-500 hover:underline">HELP</a></li>
           </ul>

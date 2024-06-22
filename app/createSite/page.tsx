@@ -28,6 +28,7 @@ import { useState } from "react";
 import withAuth from "@/components/withAuth";
 import { deleteToken } from "../utils/token";
 import { useRouter } from "next/navigation";
+import { getToken } from "../utils/token";
 
 const encoreBlue = '#3382c4';
 const encoreRed = '#f04e43';
@@ -44,17 +45,17 @@ function isEmail(email: string) {
 }
 
 function validateSiteName(siteName: string) {
-    const companyNameRegex = new RegExp(/^[A-Za-z0-9]+$/);
+    const companyNameRegex = new RegExp(/^[A-Za-z0-9\s]+$/);
     return companyNameRegex.test(siteName);
 }
 
 function validatePostCode(postCode: string) {
-    const companyNameRegex = new RegExp(/^[A-Za-z0-9]+$/);
+    const companyNameRegex = new RegExp(/^[A-Za-z0-9\s]+$/);
     return companyNameRegex.test(postCode);
 }
 
 function validateManagerName(projectManager: string) {
-    const companyNameRegex = new RegExp(/^[A-Za-z]+$/);
+    const companyNameRegex = new RegExp(/^[A-Za-z\s]+$/);
     return companyNameRegex.test(projectManager);
 }
 
@@ -85,15 +86,19 @@ function createSite() {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        const startDate = data.get("startDate") as string;
+        const startDate = formatDate(data.get("startDate") as string);
+        const endDate = formatDate(data.get("endDate") as string);
         const email = data.get("email") as string;
         const siteName = data.get("siteName") as string;
         const phone = data.get("phone") as string;
         const postCode = data.get("postCode") as string;
         const projectManager = data.get("projectManager") as string;
-        console.log({
-            startDate: startDate,
-        })
+
+        function formatDate(dateString: string): string {
+            const date = new Date(dateString);
+            const isoDateString = date.toISOString().split('T')[0];
+            return isoDateString;
+        }
 
         if (!validateSiteName(siteName)) {
             setErrors(
@@ -173,6 +178,63 @@ function createSite() {
                 </Alert>
             );
             return;
+        }
+
+        const token = getToken();
+        if(!token) {
+            throw new Error("No auth token found")
+        }
+
+        let token_obj: {access_token: string };
+        try {
+            token_obj = JSON.parse(token);
+        } catch (e) {
+            throw new Error("Invalid auth token format")
+        };
+
+        const newSite = {
+            Coordinates: "", // Assuming you want to set coordinates to empty or get them from somewhere
+        Address: "", // Assuming you want to set address to empty or get it from somewhere
+        Postcode: postCode,
+        SiteName: siteName,
+        SiteManager: projectManager,
+        PhoneNumber: phone,
+        IsActive: true,
+        StartDate: startDate,
+        Email: email, 
+        EndDate: endDate,
+        };
+
+        try {
+            const response = await fetch("http://127.0.0.1:8000/worksite/create", {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token_obj.access_token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newSite),
+            });
+        
+
+         if (!response.ok) {
+            throw new Error(`Error adding site: ${response.statusText}`)
+         }
+
+         router.push("/clientPage")
+
+        } catch (error: any) {
+            setErrors(
+                <Alert
+                    key={uuidv4()}
+                    className="z-10"
+                    severity="error"
+                    onClose={() => {
+                        setErrors(null);
+                    }}
+                >
+                    {error.message}
+                </Alert>
+            );
         }
 
     }
@@ -293,7 +355,6 @@ function createSite() {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3 }}
-                        href="http://localhost:3000/clientPage"
                     >
                         Add Site to Dashboard
                     </Button>

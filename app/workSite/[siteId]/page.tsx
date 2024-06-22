@@ -21,12 +21,14 @@ import Image from "next/image";
 import MenuIcon from "@mui/icons-material/Menu";
 import CardContent from "@mui/material/CardContent";
 import { mdiAccount, mdiMapMarker, mdiPhone } from "@mdi/js";
-import values from "../../values.json";
+import values from "D:/Sam/Documents/Work/Encore/PD Project/project-divert-frontend/values.json";
 import { useEffect, useState } from "react";
 import withAuth from "@/components/withAuth";
-import { deleteToken } from "../utils/token";
+import { deleteToken } from "@/app/utils/token";
 import { useRouter } from "next/navigation";
-import { getItems } from "../utils/getItems";
+import { getItems } from "@/app/utils/getItems";
+import { useSearchParams } from "next/navigation";
+import { getSiteById } from "@/app/utils/getSiteById";
 
 const encoreBlue = '#3382c4';
 const encoreRed = '#f04e43';
@@ -46,9 +48,43 @@ interface Item {
   Taken: false;
 }
 
+interface Site {
+  id: string;
+  SiteName: string;
+  Coordinates: string;
+  Address: string;
+  Postcode: string;
+  SiteManager: string;
+  PhoneNumber: string;
+  IsActive: boolean;
+  StartDate: string;
+  Email: string;
+}
+
 function viewSite() {
   const [anchorNav, setAnchorNav] = useState<null | HTMLElement>(null);
   const [items, setItems] = useState<Item[]>([]);
+  const [site, setSite] = useState<Site>();
+
+  const searchParams = useSearchParams();
+  const siteId = searchParams.get("siteId")
+
+  useEffect(() => {
+    if (siteId) {
+      const fetchSiteDetails = async () => {
+        try {
+          const siteDetails: Site = await getSiteById(siteId);
+          setSite(siteDetails);
+        } catch (error) {
+          console.error("Error fetching site details", error);
+        }
+      };
+      fetchSiteDetails();
+      console.log(siteId)
+    }
+  }, [siteId])
+
+  console.log(siteId)
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -78,21 +114,6 @@ function viewSite() {
     setAnchorNav(null);
   };
 
-  const ItemArea = ({ itemView, items }: { itemView: string; items: any }) => {
-    if (itemView == "list") {
-      return (
-        <div className="box m-4">
-          {items.map((value: any, index: number) => (
-            <GridItem
-              key={index}
-              data={values.items[index % 6]}
-              index={index}
-            />
-          ))}
-        </div>
-      );
-    }
-  };
   return (
     <>
       <AppBar position="static" elevation={0} sx={{ bgcolor: "#93bf3e" }}>
@@ -105,7 +126,7 @@ function viewSite() {
           </Box>
 
           <Typography variant="h6" component="div" flexGrow={1} align="center">
-            *Your site*
+          {"Your Site"/* {site.SiteName} */}
           </Typography>
 
           <Box>

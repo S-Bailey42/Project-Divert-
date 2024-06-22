@@ -9,9 +9,9 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { SideDrawer } from "@/components/components";
 import { useState, useEffect } from "react";
-import { fetchAccountRequests } from "../utils/api";
-import { acceptRequest } from "../utils/api";
-import { rejectRequest } from "../utils/api";
+import { fetchAccountRequests } from "../utils/adminPanelAPI";
+import { acceptRequest } from "../utils/adminPanelAPI";
+import { rejectRequest } from "../utils/adminPanelAPI";
 import withAuth from "@/components/withAuth";
 
 const columns: GridColDef[] = [
@@ -21,7 +21,6 @@ const columns: GridColDef[] = [
   {
     field: "accountType",
     headerName: "Account Type",
-    type: "number",
     width: 100,
   },
 ];
@@ -51,9 +50,6 @@ const AdminPanel = () => {
       await acceptRequest(selectedRows);
       setRows(rows.filter((row) => !selectedRows.includes(row.id)));
       setSelectedRows([]);
-      //fetch(`` {
-        //method: ""
-      //})
     } catch (err) {
       setError(err as Error);
     }

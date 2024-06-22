@@ -12,7 +12,7 @@ import {
   MenuItem,
   Alert,
 } from "@mui/material";
-import { useState, MouseEvent } from "react";
+import { useState, MouseEvent, useEffect } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import Image from "next/image";
 import companyImage from "/app/public/encore.png";
@@ -22,8 +22,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import withAuth from "@/components/withAuth";
 import { deleteToken } from "../utils/token";
 import { useRouter } from "next/navigation";
-//import { useSiteContext } from "../utils/siteContext";
-//import { SiteProvider } from "../utils/siteContext";
+import { getSites } from "../utils/getSites";
+import { getToken } from "../utils/token";
+
 
 const encoreBlue = "#3382c4";
 const encoreRed = "#f04e43";
@@ -31,9 +32,36 @@ const encorePurple = "#883995";
 const encoreGreen = "#93bf3e";
 const encoreGrey = "#444c52";
 
+interface Site {
+  id: string;
+  SiteName: string;
+  Coordinates: string;
+  Address: string;
+  Postcode: string;
+  SiteManager: string;
+  PhoneNumber: string;
+  IsActive: boolean;
+  StartDate: string;
+  Email: string;
+}
+
 function ClientApp() {
   const [anchorNav, setAnchorNav] = useState<null | HTMLElement>(null);
-  //const {sites} = useSiteContext();
+  const [sites, setSites] = useState<Site[]>([]);
+  const [settingsNav, setSettingsNav] = useState<null | HTMLElement>(null);
+  const [siteIdToRemove, setSiteIdToRemove] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchSites = async () => {
+      try {
+        const sitesList: Site[] = await getSites();
+        setSites(sitesList);
+      } catch (error) {
+        console.error("Error fetching sites", error)
+      }
+    };
+    fetchSites();
+  }, [])
 
   const router = useRouter();
 
@@ -50,8 +78,6 @@ function ClientApp() {
     setAnchorNav(null);
   };
 
-  const [settingsNav, setSettingsNav] = useState<null | HTMLElement>(null);
-
   const openSettings = (event: MouseEvent<HTMLElement>) => {
     setSettingsNav(event.currentTarget);
   };
@@ -59,9 +85,63 @@ function ClientApp() {
     setSettingsNav(null);
   };
 
+  async function removeSite() {
+    if (!siteIdToRemove) return;
+
+    const token = getToken();
+    if (!token) {
+      throw new Error("No auth token found");
+    }
+
+    let token_obj: { access_token: string };
+    try {
+      token_obj = JSON.parse(token);
+    } catch (e) {
+      throw new Error("Invalid auth token format");
+    }
+
+    if (!("access_token" in token_obj)) {
+      console.log(token_obj);
+      throw new Error("No auth token found in the object");
+    }
+    const deleteUrl = `http://127.0.0.1:8000/worksite/delete/?worksite_id=${siteIdToRemove}`;
+    console.log("Deleting site with URL:", deleteUrl);
+
+    const requestOptions = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token_obj.access_token}`,
+      },
+    };
+
+    try {
+      const response = await fetch(deleteUrl, requestOptions);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Failed to delete site with ID ${siteIdToRemove}: ${errorData.message || response.statusText}`);
+      }
+
+      setSites(sites.filter((site) => site.id !== siteIdToRemove));
+      setSiteIdToRemove(null);
+      closeSettings();
+      console.log(`Site with ID ${siteIdToRemove} has been successfully deleted`);
+    } catch (error: any) {
+      console.error("Error deleting site:", error);
+      alert(`Error deleting site: ${error.message}`);
+    }
+  }
+
+  const handleSiteClick = (siteId:any) => {
+    router.push(`/workSite/${siteId}`)
+  }
+
+  
+
   return (
-    
-      <Box>
+
+    <Box>
       <AppBar position="static" elevation={0} sx={{ bgcolor: "#93bf3e" }}>
         <Toolbar>
           <Box>
@@ -98,7 +178,7 @@ function ClientApp() {
           severity="error"
           action={
             <>
-              <Button color="inherit" size="small" onClick={closeSettings}>
+              <Button color="inherit" size="small" onClick={removeSite}>
                 Yes
               </Button>
               <Button color="inherit" size="small" onClick={closeSettings}>
@@ -115,147 +195,33 @@ function ClientApp() {
         Add new site
       </Button>
 
-      <Card>
-        <CardHeader
-          action={
-            <IconButton aria-label="settings" onClick={openSettings}>
-              <DeleteIcon />
-            </IconButton>
-          }
-          title=<Button
-            sx={{ color: encoreGrey, fontSize: 20 }}
-            href={`http://localhost:3000/workSite`}
-          >
-            {" "}
-            Brandon Road{" "}
-          </Button>
-          subheader="N7 9AA"
-        />
-      </Card>
+      {sites.map((site) => (
+        <Card key={site.id}>
+          <CardHeader
+            title={<button className="hover:underline"
+              onClick={() => handleSiteClick(site.id)}
+            >
+              {site.SiteName}
+            </button>}
 
-      <Card>
-        <CardHeader
-          action={
-            <IconButton aria-label="settings" onClick={openSettings}>
-              <DeleteIcon />
-            </IconButton>
-          }
-          title=<Button
-            sx={{ color: encoreGrey, fontSize: 20 }}
-            href={`http://localhost:3000/workSite`}
-          >
-            Prince William School{" "}
-          </Button>
-          subheader="PE8 4BS"
-        />
-      </Card>
+            subheader={`${site.Postcode}`}
+            action={
+              <IconButton aria-label="settings"
+                onClick={(e) => {
+                  setSiteIdToRemove(site.id);
+                  openSettings(e);
+                }}
+              >
+                <DeleteIcon />
+              </IconButton>
+            }
+          />
+        </Card>
+      ))}
 
-      <Card sx={{}}>
-        <CardHeader
-          action={
-            <IconButton aria-label="settings" onClick={openSettings}>
-              <DeleteIcon />
-            </IconButton>
-          }
-          title=<Button
-            sx={{ color: encoreGrey, fontSize: 20 }}
-            href={`http://localhost:3000/workSite`}
-          >
-            MKUH Radiotherapy{" "}
-          </Button>
-          subheader="MK6 5LD"
-        />
-      </Card>
 
-      <Card>
-        <CardHeader
-          action={
-            <IconButton aria-label="settings" onClick={openSettings}>
-              <DeleteIcon />
-            </IconButton>
-          }
-          title=<Button
-            sx={{ color: encoreGrey, fontSize: 20 }}
-            href={`http://localhost:3000/workSite`}
-          >
-            Little Reddings Primary School{" "}
-          </Button>
-          subheader="WD23 3PR"
-        />
-      </Card>
+    </Box>
 
-      <Card>
-        <CardHeader
-          action={
-            <IconButton aria-label="settings" onClick={openSettings}>
-              <DeleteIcon />
-            </IconButton>
-          }
-          title=<Button
-            sx={{ color: encoreGrey, fontSize: 20 }}
-            href={`http://localhost:3000/workSite`}
-          >
-            {" "}
-            Harwell Campus{" "}
-          </Button>
-          subheader="OX"
-        />
-      </Card>
-
-      <Card>
-        <CardHeader
-          action={
-            <IconButton aria-label="settings" onClick={openSettings}>
-              <DeleteIcon />
-            </IconButton>
-          }
-          title=<Button
-            sx={{ color: encoreGrey, fontSize: 20 }}
-            href={`http://localhost:3000/workSite`}
-          >
-            {" "}
-            Purchase Street{" "}
-          </Button>
-          subheader="NW1 1HW"
-        />
-      </Card>
-
-      <Card>
-        <CardHeader
-          action={
-            <IconButton aria-label="settings" onClick={openSettings}>
-              <DeleteIcon />
-            </IconButton>
-          }
-          title=<Button
-            sx={{ color: encoreGrey, fontSize: 20 }}
-            href={`http://localhost:3000/workSite`}
-          >
-            {" "}
-            29 Marylebone Road{" "}
-          </Button>
-          subheader="N7 9AA"
-        />
-      </Card>
-
-      <Card>
-        <CardHeader
-          action={
-            <IconButton aria-label="settings" onClick={openSettings}>
-              <DeleteIcon />
-            </IconButton>
-          }
-          title=<Button
-            sx={{ color: encoreGrey, fontSize: 20 }}
-            href={`http://localhost:3000/workSite`}
-          >
-            Crawley Innovation Centre{" "}
-          </Button>
-          subheader="RH10 9QL"
-        />
-      </Card>
-      </Box>
-   
   );
 }
 
