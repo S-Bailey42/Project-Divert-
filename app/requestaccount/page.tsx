@@ -23,7 +23,7 @@ import Container from "@mui/material/Container";
 import { useState } from "react";
 import Image from "next/image";
 import companyImage from "/app/public/project divert logo.png";
-import { IconButton } from "@mui/material";
+import { FormControlLabel, FormLabel, IconButton, Radio, RadioGroup } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 function Copyright(props: any) {
@@ -199,13 +199,13 @@ export default function SignUp() {
     setAccountType(event.target.value as string);
   };
 
-  
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Box
         sx={{
-          marginTop: 2,
+          marginTop: 1,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -276,6 +276,23 @@ export default function SignUp() {
               </FormControl>
             </Grid>
           </Grid>
+
+
+          <FormControl>
+      <FormLabel id="transport-storage-radio-group">Please tick all that apply if you are a beneficiary</FormLabel>
+      <RadioGroup
+        aria-labelledby="transport-storage-radio-group"
+        name="transport-storage-radio-group"
+        row
+      >
+        <FormControlLabel value="transport" control={<Radio />} label="We have our own transport" />
+        <FormControlLabel value="storage" control={<Radio />} label="We have our own storage" />
+        <FormControlLabel value="both" control={<Radio />} label="We have our own both" />
+        <FormControlLabel value="neither" control={<Radio />} label="We have neither" />
+       
+      </RadioGroup>
+    </FormControl>
+
           {errors}
 
           <Button
@@ -283,7 +300,7 @@ export default function SignUp() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3 }}
+            sx={{ mt: 1 }}
           >
             Request Access
           </Button>

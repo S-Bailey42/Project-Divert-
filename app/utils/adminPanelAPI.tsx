@@ -81,18 +81,19 @@ export const rejectRequest = async (ids: number[]) => {
     throw new Error("No auth token found");
   }
 
-  const response = await fetch(`${API_URL}/reject`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token_obj.access_token}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ ids }),
-  });
+  ids.forEach(async (id) => {
+    const response = await fetch(`${API_URL}/reject?id=${id}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token_obj.access_token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-  if (!response.ok) {
-    throw new Error(
-      `Error rejecting request with id ${ids}: ${response.statusText}`
-    );
-  }
+    if (!response.ok) {
+      throw new Error(
+        `Error rejecting request with id ${id}: ${response.statusText}`
+      );
+    }
+  });
 };
