@@ -192,7 +192,7 @@ const ItemInfo = ({ data }) => {
 
   return (
 
-    <Card sx={{ height: "90%", margin: "auto", maxWidth: "600px", marginTop: 5 }}>
+    <Card sx={{ height: "700px", margin: "auto", maxWidth: "600px", marginTop: 5 }}>
       <CardContent sx={{ height: "100%" }} >
         <Typography gutterBottom variant="h3">
           {data.Name}
@@ -255,9 +255,17 @@ const ItemInfo = ({ data }) => {
           />
         </Box>
         <Typography gutterBottom variant="h5" component="div">
-          {JSON.stringify(data, null, 2)}
+            {data.Name}
         </Typography>
-        <Button variant="contained">
+        <Typography gutterBottom  component="div">
+          Quantity: {data.Quantity}
+        </Typography>
+        <Typography gutterBottom  component="div">
+          Weight per item: {data.KgPerItem}kg
+        </Typography>
+        
+
+        <Button sx={{marginTop:"210px"}} variant="contained">
           Request
         </Button>
       </CardContent>
