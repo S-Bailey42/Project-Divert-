@@ -206,6 +206,7 @@ const ItemInfo = ({ data }) => {
             width: '100%',
           }}>
           <SwipeableViews
+            
             axis={"x"}
             index={activeStep}
             onChangeIndex={handleStepChange}
@@ -223,8 +224,9 @@ const ItemInfo = ({ data }) => {
                       maxWidth: 600,
                       overflow: 'hidden',
                       width: '100%',
+                      height:"200px"
                     }}
-                    src={`http://localhost:8000${step}`}
+                    src={`http://localhost:8000/items/image/${step}`}
                     alt={step.label}
                   />
                 ) : null}

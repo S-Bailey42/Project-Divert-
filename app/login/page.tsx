@@ -14,7 +14,7 @@ import Container from "@mui/material/Container";
 import { useState } from "react";
 import Image from "next/image";
 import Alert from "@mui/material/Alert";
-import companyImage from "/app/public/project divert logo.png";
+import companyImage from "/public/project divert logo.png";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import {
   InputLabel,
