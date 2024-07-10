@@ -20,10 +20,10 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import DeleteIcon from "@mui/icons-material/Delete";
 import withAuth from "@/components/withAuth";
-import { deleteToken, getUserId } from "../utils/token";
+import { deleteToken, getUserId } from "@/app/utils/token";
 import { useRouter } from "next/navigation";
-import { getSites } from "../utils/getSites";
-import { getToken } from "../utils/token";
+import { getSites } from "@/app/utils/getSites";
+import { getToken } from "@/app/utils/token";
 
 
 

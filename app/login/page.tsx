@@ -22,7 +22,7 @@ import {
   InputAdornment,
   IconButton,
 } from "@mui/material";
-import { saveToken } from "../utils/token";
+import { getUserId, saveToken } from "../utils/token";
 import { useRouter } from "next/navigation";
 
 function Copyright(props: any) {
@@ -70,7 +70,7 @@ export default function SignUp() {
         saveToken(token);
         const userTypeValidator = JSON.parse(token);
         if (userTypeValidator["user_type_id"] == 1) {
-          router.push("/clientPage");
+          router.push(`/clientPage`);
         }
         if (userTypeValidator["user_type_id"] == 2) {
           router.push("/charity");

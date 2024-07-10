@@ -21,7 +21,7 @@ import Image from "next/image";
 import MenuIcon from "@mui/icons-material/Menu";
 import CardContent from "@mui/material/CardContent";
 import { mdiAccount, mdiMapMarker, mdiPhone } from "@mdi/js";
-import values from "D:/Sam/Documents/Work/Encore/PD Project/project-divert-frontend/values.json";
+//import values from "C:/Users/Samue/OneDrive/project-divert-frontend/values.json";
 import { useEffect, useState } from "react";
 import withAuth from "@/components/withAuth";
 import { deleteToken } from "@/app/utils/token";
