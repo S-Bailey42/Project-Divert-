@@ -1,4 +1,3 @@
-const API_URL = "http://127.0.0.1:8000/items";
 import { getToken } from "./token";
 
 interface Item {
@@ -13,7 +12,7 @@ interface Item {
     Taken: false;
 }
 
-export const getItems = async (): Promise<Item[]> => {
+export const getItems = async (siteId : string): Promise<Item[]> => {
     const token = getToken();
     if (!token) {
         throw new Error("No auth token found");
@@ -31,7 +30,7 @@ export const getItems = async (): Promise<Item[]> => {
         throw new Error("No auth token found in the object");
     }
 
-    const response = await fetch(`${API_URL}`, {
+    const response = await fetch(`http://127.0.0.1:8000/worksite/items/${siteId}`, {
         method: "GET",
         headers: {
             Authorization: `Bearer ${token_obj.access_token}`,

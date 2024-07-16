@@ -13,6 +13,8 @@ import {
   MenuItem,
   CardActions,
   Icon,
+  CardHeader,
+  Alert,
 } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
@@ -24,11 +26,10 @@ import { mdiAccount, mdiMapMarker, mdiPhone } from "@mdi/js";
 //import values from "C:/Users/Samue/OneDrive/project-divert-frontend/values.json";
 import { useEffect, useState } from "react";
 import withAuth from "@/components/withAuth";
-import { deleteToken } from "@/app/utils/token";
+import { deleteToken, getSiteId, getToken } from "@/app/utils/token";
 import { useRouter } from "next/navigation";
 import { getItems } from "@/app/utils/getItems";
-import { useSearchParams } from "next/navigation";
-import { getSiteById } from "@/app/utils/getSiteById";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const encoreBlue = '#3382c4';
 const encoreRed = '#f04e43';
@@ -63,35 +64,16 @@ interface Site {
 
 function viewSite() {
   const [anchorNav, setAnchorNav] = useState<null | HTMLElement>(null);
-  const [items, setItems] = useState<Item[]>([]);
-  const [site, setSite] = useState<Site>();
-
-  const searchParams = useSearchParams();
-  const siteId = searchParams.get("siteId")
-
-  useEffect(() => {
-    if (siteId) {
-      const fetchSiteDetails = async () => {
-        try {
-          const siteDetails: Site = await getSiteById(siteId);
-          setSite(siteDetails);
-        } catch (error) {
-          console.error("Error fetching site details", error);
-        }
-      };
-      fetchSiteDetails();
-      console.log(siteId)
-    }
-  }, [siteId])
-
-  console.log(siteId)
+  let [items, setItems] = useState<Item[]>([]);
+  const [itemIdToRemove, setItemIdToRemove] = useState< string | null>(null);
+  const [deleteMenu, setDeleteMenu] = useState<null | HTMLElement>(null);
 
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const itemList: Item[] = await getItems();
-        setItems(itemList);
-      } catch(error) {
+        items = await getItems(getSiteId());
+        setItems(items);
+      } catch (error) {
         console.error("Error fetching items", error)
       }
     };
@@ -100,6 +82,16 @@ function viewSite() {
   }, [])
 
   const router = useRouter();
+
+  const openDeleteMenu = (event: React.MouseEvent<HTMLElement>, itemId: string) => {
+    setItemIdToRemove(itemId);
+    setDeleteMenu(event.currentTarget);
+  }
+
+  const closeDeleteMenu = () => {
+    setDeleteMenu(null);
+    setItemIdToRemove(null);
+  }
 
   const handleLogout = (event: any) => {
     event.preventDefault();
@@ -114,6 +106,54 @@ function viewSite() {
     setAnchorNav(null);
   };
 
+  async function removeItem() {
+    if (!itemIdToRemove) return;
+
+    const token = getToken();
+    if (!token) {
+      throw new Error("No auth token found");
+    }
+
+    let token_obj: { access_token: string };
+    try {
+      token_obj = JSON.parse(token);
+    } catch (e) {
+      throw new Error("Invalid auth token format");
+    }
+
+    if (!("access_token" in token_obj)) {
+      console.log(token_obj);
+      throw new Error("No auth token found in the object");
+    }
+    const deleteUrl = `http://127.0.0.1:8000/worksite/remove/item?item_id=${itemIdToRemove}`;
+    console.log("Deleting site with URL:", deleteUrl);
+
+    const requestOptions = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token_obj.access_token}`,
+      },
+    };
+
+    try {
+      const response = await fetch(deleteUrl, requestOptions);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Failed to delete item with ID ${itemIdToRemove}: ${errorData.message || response.statusText}`);
+      }
+
+      setItems(items.filter((item) => item.id !== itemIdToRemove));
+      setItemIdToRemove(null);
+      closeDeleteMenu();
+      console.log(`Item with ID ${itemIdToRemove} has been successfully deleted`);
+    } catch (error: any) {
+      console.error("Error deleting item:", error);
+      alert(`Error deleting item: ${error.message}`);
+    }
+  }
+
   return (
     <>
       <AppBar position="static" elevation={0} sx={{ bgcolor: "#93bf3e" }}>
@@ -126,7 +166,7 @@ function viewSite() {
           </Box>
 
           <Typography variant="h6" component="div" flexGrow={1} align="center">
-          {"Your Site"/* {site.SiteName} */}
+            {"Your Site"}
           </Typography>
 
           <Box>
@@ -138,7 +178,7 @@ function viewSite() {
               onClose={closeMenu}
             >
               <MenuList>
-              <a href="http://localhost:3000/siteHistory"><MenuItem>View Site History</MenuItem></a>
+                <a href="http://localhost:3000/siteHistory"><MenuItem>View Site History</MenuItem></a>
                 <MenuItem>Help</MenuItem>
                 <a onClick={handleLogout}><MenuItem>Logout</MenuItem></a>
               </MenuList>
@@ -148,55 +188,82 @@ function viewSite() {
         </Toolbar>
       </AppBar>
 
+      <Menu open={Boolean(deleteMenu)} onClose={closeDeleteMenu}>
+        <Alert
+          severity="error"
+          action={
+            <>
+              <Button color="inherit" size="small" onClick={removeItem}>
+                Yes
+              </Button>
+              <Button color="inherit" size="small" onClick={closeDeleteMenu}>
+                No
+              </Button>
+            </>
+          }
+        >
+          Are you sure you want to remove this item?
+        </Alert>
+      </Menu>
+
       <Button sx={{ color: "#6e6e6e" }} href="http://localhost:3000/addAnItem">
         Add Item
       </Button>
 
-      {/* <div className="box m-4">
+      <Box m={4}>
         {items.map((item) => (
-          <GridItem key={item.id} data={item} />
+          <GridItem key={item.id} data={item} index={0} openDeleteMenu={openDeleteMenu} />
         ))}
-      </div> */}
+      </Box>
     </>
   );
 }
 
 
 
-const GridItem = ({ data }: { data: Item }) => (
+const GridItem = ({ index, data, openDeleteMenu }: { index: number, data: Item, openDeleteMenu: 
+  (event: React.MouseEvent<HTMLElement>, itemId: string) => void }) => (
   <Card>
     <CardMedia
-      //image={`/${(index % 6) + 1}.jpg`}
+      image={`/${(index % 6) + 1}.jpg`}
       sx={{ height: 200 }}
       title="skip"
     />
+     <IconButton
+     onClick={(e) => {
+      openDeleteMenu(e, data.id);
+    }}
+  >
+        <DeleteIcon />
+      </IconButton>
+
     <CardContent>
       <Typography gutterBottom variant="h5" component="div">
-        {`(${data.Quantity}) ${data.Name}`}
+        {`${data.Name}`}
       </Typography>
       <Typography
         variant="body1"
         color="text.secondary"
         className="flex flex-row gap-2"
       >
-        
-        {data.SiteID}
+
+        {`Quantity: ${data.Quantity}`}
       </Typography>
       <Typography
         variant="body1"
         color="text.secondary"
         className="flex flex-row gap-2"
       >
-        
-        {data.KgPerItem}
+
+        {`Weight Per Item (KG): ${data.KgPerItem}`}
       </Typography>
       <Typography
         variant="body1"
         color="text.secondary"
         className="flex flex-row gap-2"
       >
-        
-        {data.Taken}
+
+        {`Available: ${data.Taken}`}
       </Typography>
     </CardContent>
     <CardActions>

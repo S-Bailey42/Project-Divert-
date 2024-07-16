@@ -22,7 +22,7 @@ import companyImage from "/app/public/encore.png";
 import pdImage from "/app/public/project divert logo.png";
 import { AppBar, IconButton, Menu, MenuList, Toolbar } from "@mui/material";
 import withAuth from "@/components/withAuth";
-import { deleteToken, getToken } from "../utils/token";
+import { deleteToken, getSiteId, getToken, getUserId } from "../utils/token";
 import { useRouter } from "next/navigation";
 
 const encoreBlue = '#3382c4';
@@ -145,11 +145,11 @@ function AddItem() {
 
     const newItem = {
       Name: itemName,
-      SiteID: "0bd34c15-12ad-4593-8b5b-83661182e2b7",
-      ItemTypeID: 0,
+      SiteID: getSiteId(),
+      ItemTypeID: parseInt(category),
       Taken: false,
-      Quantity: quantity,
-      KgPerItem: weight,
+      Quantity: parseInt(quantity),
+      KgPerItem: parseInt(weight),
       Carbon: 0,
       Dimensions: dimensions,
     }
@@ -164,13 +164,13 @@ function AddItem() {
         body: JSON.stringify(newItem),
       });
 
-      console.log(newItem);
-
       if (!response.ok) {
         throw new Error(`Error adding item: ${response.statusText}`)
       }
 
-      router.push("/workSite")
+      console.log(newItem);
+
+      router.push(`/workSite/${newItem.SiteID}`)
 
     } catch (error: any) {
       setErrors(
