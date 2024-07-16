@@ -20,11 +20,10 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import DeleteIcon from "@mui/icons-material/Delete";
 import withAuth from "@/components/withAuth";
-import { deleteToken, getUserId } from "@/app/utils/token";
+import { deleteToken, getUserId, updateSiteId } from "@/app/utils/token";
 import { useRouter } from "next/navigation";
 import { getSites } from "@/app/utils/getSites";
 import { getToken } from "@/app/utils/token";
-
 
 
 const encoreBlue = "#3382c4";
@@ -53,10 +52,13 @@ function ClientApp() {
   const [siteIdToRemove, setSiteIdToRemove] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log("ClientApp component mounted");
     const fetchSites = async () => {
       try {
+        console.log("Fetching sites...");
         const sitesList: Site[] = await getSites();
         setSites(sitesList);
+        console.log("Fetched sites:", sitesList);
       } catch (error) {
         console.error("Error fetching sites", error)
       }
@@ -136,11 +138,17 @@ function ClientApp() {
     }
   }
 
-  const handleSiteClick = (siteId:any) => {
-    router.push(`/workSite/${siteId}`)
+  const handleSiteClick = async (siteId: any) => {
+    try {
+      alert(`Clicked site ID: ${siteId}`);
+      await updateSiteId(siteId);
+      alert('updateSiteId completed');
+      router.push(`/workSite/${siteId}`)
+    } catch (error: any) {
+      console.error("Error updating site ID", error);
+      alert(`Error updating site ID: ${error.message}`);
+    }
   }
-
-  
 
   return (
 
