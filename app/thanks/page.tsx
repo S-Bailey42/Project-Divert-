@@ -15,7 +15,7 @@ export default function SignUp() {
 
   const handleHomePage = (event: any) => {
     event.preventDefault();
-    router.push("/home")
+    router.push("/")
   };
 
   return (

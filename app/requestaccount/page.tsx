@@ -6,24 +6,20 @@ import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
-import MenuItem, { menuItemClasses } from "@mui/material/MenuItem";
-import OutlinedInput from "@mui/material/OutlinedInput";
+import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import InputAdornment from "@mui/material/InputAdornment";
 import Link from "@mui/material/Link";
 import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { v4 as uuidv4 } from "uuid";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useState } from "react";
 import Image from "next/image";
 import companyImage from "/app/public/project divert logo.png";
-import { FormControlLabel, FormLabel, IconButton, Radio, RadioGroup } from "@mui/material";
+import { FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 function Copyright(props: any) {
@@ -55,6 +51,11 @@ function validateCompanyName(companyName: string) {
   return companyNameRegex.test(companyName);
 }
 
+function validatePhone(phone: string) {
+  const phoneRegex = new RegExp(/^[0-9\s]+$/);
+  return phoneRegex.test(phone);
+}
+
 export default function SignUp() {
   const router = useRouter();
   const [errors, setErrors] = useState<any>(null);
@@ -73,10 +74,10 @@ export default function SignUp() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const email = data.get("email") as string;
-    const companyName = data.get("companyName") as string;
-    const password = data.get("password") as string;
+    const email = data.get("email") as string; 
     const phone = data.get("phone") as string;
+    const companyName = data.get("companyName") as string;
+    const transport = data.get("transport-storage-radio-group");
 
     if (!validateCompanyName(companyName)) {
       setErrors(
@@ -88,7 +89,7 @@ export default function SignUp() {
             setErrors(null);
           }}
         >
-          Please enter a valid company name
+          Please enter a valid organisation name
         </Alert>
       );
       return;
@@ -100,6 +101,7 @@ export default function SignUp() {
           key={uuidv4()}
           className="z-10"
           severity="error"
+          
           onClose={() => {
             setErrors(null);
           }}
@@ -110,7 +112,7 @@ export default function SignUp() {
       return;
     }
 
-    if (phone == null) {
+    if (!validatePhone(phone)) {
       setErrors(
         <Alert
           key={uuidv4()}
@@ -123,6 +125,7 @@ export default function SignUp() {
           Please enter a phone number
         </Alert>
       );
+      return;
     }
 
     if (accountType == "") {
@@ -139,6 +142,22 @@ export default function SignUp() {
         </Alert>
       );
       return;
+    } 
+    
+    if (accountType == "2" && transport == null){
+        setErrors(
+          <Alert
+            key={uuidv4()}
+            className="z-10"
+            severity="error"
+            onClose={() => {
+              setErrors(null);
+            }}
+          >
+            Please let us know your transport and storage situation
+          </Alert>
+        );
+      return;  
     } else {
       const response = await fetch("http://127.0.0.1:8000/request/account", {
         method: "POST",
@@ -149,6 +168,7 @@ export default function SignUp() {
         body: JSON.stringify({
           companyName: companyName,
           email: email,
+          phone: phone,
           userType: accountType,
         }),
       });
@@ -250,7 +270,6 @@ export default function SignUp() {
                 id="phone"
                 label="Contact Number"
                 name="phone"
-                type="tel"
                 autoComplete="phone"
               />
             </Grid>
@@ -279,19 +298,19 @@ export default function SignUp() {
 
 
           <FormControl>
-      <FormLabel id="transport-storage-radio-group">Please tick all that apply if you are a beneficiary</FormLabel>
-      <RadioGroup
-        aria-labelledby="transport-storage-radio-group"
-        name="transport-storage-radio-group"
-        row
-      >
-        <FormControlLabel value="transport" control={<Radio />} label="We have our own transport" />
-        <FormControlLabel value="storage" control={<Radio />} label="We have our own storage" />
-        <FormControlLabel value="both" control={<Radio />} label="We have our own both" />
-        <FormControlLabel value="neither" control={<Radio />} label="We have neither" />
-       
-      </RadioGroup>
-    </FormControl>
+            <FormLabel id="transport-storage-radio-group">Please tick all that apply if you are a beneficiary</FormLabel>
+            <RadioGroup
+              aria-labelledby="transport-storage-radio-group"
+              name="transport-storage-radio-group"
+              row
+            >
+              <FormControlLabel value="transport" control={<Radio />} label="We have our own transport" />
+              <FormControlLabel value="storage" control={<Radio />} label="We have our own storage" />
+              <FormControlLabel value="both" control={<Radio />} label="We have our own both" />
+              <FormControlLabel value="neither" control={<Radio />} label="We have neither" />
+
+            </RadioGroup>
+          </FormControl>
 
           {errors}
 
